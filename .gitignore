@@ -1,0 +1,39 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# Compiled Output:
+/dist
+/tmp
+/out-tsc
+target
+/.target/
+
+# Generated Files/Classes:
+generated
+
+# IDEs and editors:
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.vscode/
+
+# System Files:
+.DS_Store
+Thumbs.db
+
+# Misc:
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# Vert.x / Jspare
+.vertx/
+file-uploads/

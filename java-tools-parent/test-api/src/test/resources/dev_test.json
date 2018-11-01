@@ -1,0 +1,29 @@
+{
+    "port": 9999,
+    "dirPath": "src/test/resources",
+    "fileName": "senior_test_options",
+    "databaseId": "vetorh_test",
+    "ignoreProprietary": true,
+    "cachingEnabled":false,
+    "mail": {
+        "hostname": "localhost",
+        "port": 25,
+        "username": "ssm@senior.com.br",
+        "password": "password"
+    },
+    "defaultMailFrom": "senior@senior.com.br",
+    "senior": {
+        "com.senior.middleware.manager.server": "localhost",
+        "com.senior.middleware.manager.port": 1299,
+        "com.senior.middleware.manager.timeout": 100000,
+        "com.senior.middleware.manager.defaultUsername": "senior",
+        "com.senior.middleware.manager.defaultPassword": "senior",
+        "com.senior.database.vetorh.url": "jdbc:sqlserver://localhost:1433;instanceName=SQL2014EXPRESS;databaseName=vetorh_test",
+        "com.senior.database.vetorh.driver_class": "com.microsoft.sqlserver.jdbc.SQLServerDriver",
+        "com.senior.database.vetorh.username": "sa",
+        "com.senior.database.vetorh.password": "XSn1fmF1w1Tqix5C",
+        "com.senior.database.vetorh.pool.max": 20,
+        "com.senior.default_database.id": "vetorh_test",
+        "com.senior.system_access.logon_cypher.key": "VUc7QQ=="
+    }
+}

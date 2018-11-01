@@ -1,0 +1,16 @@
+package br.com.senior.validation;
+
+import br.com.senior.validation.exception.CustomValidationException;
+
+import java.util.Set;
+
+public class TestValidationRule implements ValidationRule<BeautifulObject> {
+
+	public static final String ERROR = "test.random.error";
+
+	@Override
+	public Set<ValidationError> validate(BeautifulObject object) {
+		throw new CustomValidationException(ERROR);
+	}
+
+}
