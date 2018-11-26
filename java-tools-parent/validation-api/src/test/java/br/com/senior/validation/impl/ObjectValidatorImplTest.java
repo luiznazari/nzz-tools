@@ -2,7 +2,7 @@ package br.com.senior.validation.impl;
 
 import br.com.senior.validation.BeautifulObject;
 import br.com.senior.validation.SimpleTestError;
-import br.com.senior.volkswagen.test.UnitTest;
+import br.com.senior.test.UnitTest;
 import  br.com.senior.validation.ValidationRule;
 import com.google.common.collect.Sets;
 import org.junit.Before;

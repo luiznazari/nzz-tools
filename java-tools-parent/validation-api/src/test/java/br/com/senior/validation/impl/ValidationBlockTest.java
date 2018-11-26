@@ -4,7 +4,7 @@ import br.com.senior.validation.SimpleTestError;
 import br.com.senior.validation.ValidationError;
 import br.com.senior.validation.ValidationRule;
 import br.com.senior.validation.exception.CustomValidationException;
-import br.com.senior.volkswagen.test.UnitTest;
+import br.com.senior.test.UnitTest;
 import com.google.common.collect.Sets;
 import org.junit.Test;
 import org.mockito.InOrder;

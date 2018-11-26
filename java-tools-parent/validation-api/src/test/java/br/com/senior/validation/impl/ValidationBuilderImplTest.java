@@ -2,7 +2,7 @@ package br.com.senior.validation.impl;
 
 import br.com.senior.validation.*;
 import br.com.senior.validation.impl.rules.NotNullValidationRule;
-import br.com.senior.volkswagen.test.UnitTest;
+import br.com.senior.test.UnitTest;
 import org.junit.Before;
 import org.junit.Test;
 
