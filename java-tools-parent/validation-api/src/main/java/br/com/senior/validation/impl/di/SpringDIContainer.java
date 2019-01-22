@@ -1,7 +1,7 @@
 package br.com.senior.validation.impl.di;
 
 import br.com.senior.validation.di.DIContainer;
-import br.com.senior.validation.exception.CustomValidationRuntimeException;
+import br.com.senior.validation.exception.ValidationApiException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -33,7 +33,7 @@ public class SpringDIContainer implements DIContainer {
 			return applicationContext.getBean(clazz);
 		}
 
-		throw new CustomValidationRuntimeException(String.format(TEMPLATE_ERROR_SPRING_NOT_LOADED, clazz.getName()));
+		throw new ValidationApiException(String.format(TEMPLATE_ERROR_SPRING_NOT_LOADED, clazz.getName()));
 	}
 
 }

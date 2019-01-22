@@ -1,6 +1,7 @@
 package br.com.senior.validation.impl;
 
 import br.com.senior.validation.*;
+import br.com.senior.validation.exception.CustomValidationException;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -79,7 +80,9 @@ public class CustomValidatorImplTest {
 
 		ValidationResult validationResult = validator
 			.validate(object)
-			.validate(SimpleTestError::new);
+			.validate(() -> {
+				throw new CustomValidationException(SimpleTestError.DEFAULT_ERROR_MSG_CODE);
+			});
 
 		assertTrue(validationResult.hasErrors());
 		Set<ValidationError> validationErrors = validationResult.getErrors();

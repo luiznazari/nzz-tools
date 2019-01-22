@@ -1,9 +1,10 @@
 package br.com.senior.validation;
 
-import br.com.senior.validation.impl.ValidationErrorI18n;
+import br.com.senior.validation.impl.I18nValidationError;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
+import java.time.temporal.Temporal;
 import java.util.Collection;
 import java.util.function.Supplier;
 
@@ -13,6 +14,8 @@ import java.util.function.Supplier;
  * @author Luiz.Nazari
  */
 public abstract class ValidationConstraints {
+
+	private static final String ERROR_START_DATE_AFTER_END_DATE = "error.start.date.after.end.date";
 
 	private ValidationConstraints() {
 	}
@@ -34,7 +37,16 @@ public abstract class ValidationConstraints {
 	}
 
 	private static Supplier<ValidationError> mustBeFalse(Supplier<Boolean> condition, String errorMessageKey) {
-		return () -> condition.get() ? new ValidationErrorI18n(errorMessageKey) : null;
+		return () -> condition.get() ? new I18nValidationError(errorMessageKey) : null;
+	}
+
+	public static <T extends Temporal & Comparable<T>> Supplier<ValidationError> startDateEqualsOrBeforeEndDate(final T start, final T end) {
+		return () -> {
+			if (start != null && end != null && start.compareTo(end) > 0) {
+				return new I18nValidationError(ERROR_START_DATE_AFTER_END_DATE);
+			}
+			return null;
+		};
 	}
 
 }

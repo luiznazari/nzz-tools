@@ -1,6 +1,6 @@
 package br.com.senior.validation.di;
 
-import br.com.senior.validation.exception.CustomValidationRuntimeException;
+import br.com.senior.validation.exception.ValidationApiException;
 import br.com.senior.validation.impl.di.DefaultConstructorDIContainer;
 import br.com.senior.validation.impl.di.NullDIContainer;
 import br.com.senior.validation.impl.di.SpringDIContainer;
@@ -42,7 +42,7 @@ public class ValidationDIContainerManager {
 					this.registerDIContainer(diContainer);
 				} catch (InstantiationException | IllegalAccessException e) {
 					String errorMessage = String.format(TEMPLATE_ERROR_INSTANTIATE_CONTAINER, diContainerClass.getName());
-					throw new CustomValidationRuntimeException(errorMessage);
+					throw new ValidationApiException(errorMessage);
 				}
 			}
 		});

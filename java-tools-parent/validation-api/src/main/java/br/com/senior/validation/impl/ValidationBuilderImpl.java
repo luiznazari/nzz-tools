@@ -6,7 +6,7 @@ import br.com.senior.validation.ValidationError;
 import br.com.senior.validation.ValidationRule;
 import br.com.senior.validation.di.DIContainer;
 import br.com.senior.validation.di.ValidationDIContainerManager;
-import br.com.senior.validation.exception.CustomValidationRuntimeException;
+import br.com.senior.validation.exception.ValidationApiException;
 import br.com.senior.validation.impl.rules.BeanValidationRule;
 import lombok.extern.slf4j.Slf4j;
 
@@ -42,7 +42,7 @@ public class ValidationBuilderImpl<T> implements ValidationBuilder<T> {
 
 		if (providedValidationRule == null) {
 			String errorMessage = String.format(TEMPLATE_ERROR_NO_PROVIDER_FOR_RULE, validationRuleClass);
-			throw new CustomValidationRuntimeException(errorMessage);
+			throw new ValidationApiException(errorMessage);
 		}
 
 		return this.with(providedValidationRule);

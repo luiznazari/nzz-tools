@@ -3,6 +3,7 @@ package br.com.senior.validation.impl;
 import br.com.senior.validation.ValidationError;
 import br.com.senior.validation.ValidationRule;
 import com.google.common.collect.Sets;
+import lombok.NonNull;
 
 import java.util.Collections;
 import java.util.Set;
@@ -21,10 +22,10 @@ public abstract class AbstractValidationRule<T> implements ValidationRule<T> {
 		}
 	}
 
-	protected void addError(String errorMessageCode) {
-		if (errorMessageCode != null) {
-			this.validationErrors.add(new ValidationErrorI18n(errorMessageCode));
-		}
+	protected I18nValidationError addError(@NonNull String errorMessageCode) {
+		I18nValidationError validationErrorI18n = new I18nValidationError(errorMessageCode);
+		this.validationErrors.add(validationErrorI18n);
+		return validationErrorI18n;
 	}
 
 	protected Set<ValidationError> errors() {

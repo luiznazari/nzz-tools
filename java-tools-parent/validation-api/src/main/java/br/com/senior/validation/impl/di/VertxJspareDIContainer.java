@@ -1,7 +1,7 @@
 package br.com.senior.validation.impl.di;
 
 import br.com.senior.validation.di.DIContainer;
-import br.com.senior.validation.exception.CustomValidationRuntimeException;
+import br.com.senior.validation.exception.ValidationApiException;
 import org.jspare.core.Component;
 import org.jspare.core.Environment;
 
@@ -23,7 +23,7 @@ public class VertxJspareDIContainer implements DIContainer {
 	@Override
 	public <T> T provide(Class<T> clazz) {
 		if (!Environment.isLoaded()) {
-			throw new CustomValidationRuntimeException(String.format(TEMPLATE_ERROR_JSPARE_NOT_LOADED, clazz.getName()));
+			throw new ValidationApiException(String.format(TEMPLATE_ERROR_JSPARE_NOT_LOADED, clazz.getName()));
 		}
 		return Environment.provide(clazz);
 	}

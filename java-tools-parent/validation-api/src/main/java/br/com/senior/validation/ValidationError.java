@@ -1,6 +1,7 @@
 package br.com.senior.validation;
 
-import java.io.Serializable;
+import br.com.senior.validation.message.ErrorMessage;
+
 import java.util.Optional;
 
 /**
@@ -8,17 +9,7 @@ import java.util.Optional;
  *
  * @author Luiz.Nazari
  */
-public interface ValidationError extends Serializable {
-
-	/**
-	 * @return the error message key
-	 */
-	String getMessageKey();
-
-	/**
-	 * @return the error, user friendly, message
-	 */
-	String getMessage();
+public interface ValidationError extends ErrorMessage {
 
 	/**
 	 * Extracts the error message key out of an string surrounded by '{' and '}'.

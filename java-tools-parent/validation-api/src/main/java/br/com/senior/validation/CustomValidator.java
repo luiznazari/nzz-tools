@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 public interface CustomValidator {
 
 	/**
-	 * Validates an object applying bean br.com.senior.validation.
+	 * Validates an object applying bean validation.
 	 *
 	 * @param object the object to be validated
 	 * @return the br.com.senior.validation result

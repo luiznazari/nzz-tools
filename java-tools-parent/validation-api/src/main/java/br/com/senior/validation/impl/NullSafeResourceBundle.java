@@ -15,7 +15,7 @@ public class NullSafeResourceBundle extends ResourceBundle {
 
 	private ResourceBundle delegate;
 
-	NullSafeResourceBundle(String bundleBaseName) {
+	public NullSafeResourceBundle(String bundleBaseName) {
 		try {
 			this.delegate = ResourceBundle.getBundle(bundleBaseName);
 		} catch (MissingResourceException e) {

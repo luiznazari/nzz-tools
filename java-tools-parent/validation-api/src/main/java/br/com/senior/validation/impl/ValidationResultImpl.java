@@ -44,7 +44,7 @@ public class ValidationResultImpl implements ValidationResult {
 	@Override
 	public ValidationResult onErrorThrowException() {
 		this.onError(errors -> {
-			throw new CustomValidationException(errors.iterator().next());
+			throw new CustomValidationException(errors);
 		});
 		return this;
 	}
