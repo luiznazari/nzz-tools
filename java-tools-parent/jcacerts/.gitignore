@@ -1,0 +1,21 @@
+# IDEs
+.idea
+*.iws
+*.iml
+*.ipr
+.vscode
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# Build
+generated/
+target/
+
+# Misc
+*.log
+*.adoc
