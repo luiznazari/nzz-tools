@@ -6,9 +6,7 @@ import org.bouncycastle.openssl.PEMWriter;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -33,10 +31,7 @@ class CertificateImporter {
 	void importCertificates() {
 		try {
 			final KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-
-			if (this.options.getKeyStorePath() != null) {
-				this.loadSrcKeyStoreInto(keyStore);
-			}
+			this.loadSrcKeyStoreInto(keyStore);
 
 			Map<String, X509Certificate> hostsCertificates = this.downloadDomainsCertificatesInto(keyStore);
 
@@ -48,7 +43,7 @@ class CertificateImporter {
 				this.saveCertificates(hostsCertificates);
 			}
 		} catch (Exception e) {
-			log.error(e);
+			log.error(e.getMessage(), e);
 		}
 	}
 
@@ -84,13 +79,17 @@ class CertificateImporter {
 	 * @throws NoSuchAlgorithmException If the algorithm used to check the integrity of the keystore cannot be found.
 	 */
 	private void loadSrcKeyStoreInto(KeyStore keyStore) throws IOException, CertificateException, NoSuchAlgorithmException {
-		char[] passPhrase = this.options.getKeyStorePassword().toCharArray();
+		char[] passPhrase = this.options.getSrcKeyStorePassword().toCharArray();
 
 		File srcKeyStoreFile = this.options.getSrcKeyStoreFile();
 		log.info(String.format("Loading KeyStore %s...", srcKeyStoreFile.getAbsolutePath()));
 
-		try (InputStream in = new FileInputStream(srcKeyStoreFile)) {
-			keyStore.load(in, passPhrase);
+		if (srcKeyStoreFile.exists()) {
+			try (InputStream in = new FileInputStream(srcKeyStoreFile)) {
+				keyStore.load(in, passPhrase);
+			}
+		} else {
+			keyStore.load(null, null);
 		}
 	}
 
@@ -104,9 +103,9 @@ class CertificateImporter {
 	 * @throws KeyStoreException        If the keystore has not been initialized (loaded).
 	 */
 	private void importCertificatesToDestinationKeyStore(KeyStore keyStore) throws IOException, CertificateException, NoSuchAlgorithmException, KeyStoreException {
-		char[] passPhrase = this.options.getKeyStorePassword().toCharArray();
+		char[] passPhrase = this.options.getDestKeyStorePassword().toCharArray();
 
-		File destinationKeyStoreFile = this.options.getSrcKeyStoreFile();
+		File destinationKeyStoreFile = this.options.getDestKeyStoreFile();
 		this.backupFile(destinationKeyStoreFile);
 
 		try (FileOutputStream out = new FileOutputStream(destinationKeyStoreFile)) {
@@ -126,7 +125,7 @@ class CertificateImporter {
 		if (file.exists()) {
 			Path filePath = file.toPath();
 			Path fileBkpPath = Paths.get(filePath.getParent().toString(), filePath.getFileName().toString() + ".bkp");
-			Files.copy(filePath, fileBkpPath);
+			Files.copy(filePath, fileBkpPath, StandardCopyOption.REPLACE_EXISTING);
 		}
 	}
 
@@ -140,7 +139,9 @@ class CertificateImporter {
 		for (Map.Entry<String, X509Certificate> crtEntry : hostsCertificates.entrySet()) {
 			saveCertificateToFile(crtEntry.getKey(), crtEntry.getValue());
 		}
-		log.info(String.format("Trusted certificates stored in: \"%s\".", this.options.getCertificatesOutputDirPath()));
+
+		File outDir = new File(this.options.getCertificatesOutputDirPath());
+		log.info(String.format("Trusted certificates stored in: \"%s\".", outDir.getAbsolutePath()));
 	}
 
 	/**

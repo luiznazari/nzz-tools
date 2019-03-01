@@ -5,6 +5,6 @@ abstract class SecurityConstants {
 	private SecurityConstants() {
 	}
 
-	static final String JCACERT_COMMAND_VERSION = "1.0.1";
+	static final String JCACERT_COMMAND_VERSION = "1.0.2";
 
 }

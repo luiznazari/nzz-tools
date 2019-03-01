@@ -1,5 +1,6 @@
 package br.com.nazari.security.jcacert;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import picocli.CommandLine;
@@ -17,24 +18,26 @@ public class CertificateImporterOptions {
 	private static final String DEFAULT_SECURITY_PROTOCOL_VERSION = "TLSv1.2";
 
 	@CommandLine.Option(
-		names = {"-S", "--httpSecurityProtocol"}, defaultValue = DEFAULT_SECURITY_PROTOCOL_VERSION,
-		description = "Security protocol version used when stabilizing connection with the servers.")
-	private String httpSecurityProtocol = DEFAULT_SECURITY_PROTOCOL_VERSION;
-
-	@CommandLine.Option(
-		names = {"-P", "--httpPort"}, defaultValue = DEFAULT_SECURITY_PROTOCOL_PORT,
-		description = "The port used when stabilizing connection with the servers.")
-	private int httpPort = Integer.valueOf(DEFAULT_SECURITY_PROTOCOL_PORT);
-
-	@CommandLine.Option(
-		names = {"-k", "--keyStorePath"},
+		names = {"-k", "--srcKeyStorePath"},
 		description = "Absolute path of the target Key Store. Defaults to ${java.home}/lib/security/cacerts.")
-	private String keyStorePath;
+	@Getter(AccessLevel.NONE)
+	private String srcKeyStorePath;
 
 	@CommandLine.Option(
-		names = {"-p", "--keyStorePassword"}, defaultValue = DEFAULT_KEY_STORE_PASSWORD,
+		names = {"-p", "--srcKeyStorePassword"}, defaultValue = DEFAULT_KEY_STORE_PASSWORD,
 		description = "Password of the target Key Store.")
-	private String keyStorePassword = DEFAULT_KEY_STORE_PASSWORD;
+	private String srcKeyStorePassword = DEFAULT_KEY_STORE_PASSWORD;
+
+	@CommandLine.Option(
+		names = {"-K", "--destKeyStorePath"},
+		description = "Absolute path of the destination Key Store. Defaults to the same of --srcKeyStorePath.")
+	@Getter(AccessLevel.NONE)
+	private String destKeyStorePath;
+
+	@CommandLine.Option(
+		names = {"-P", "--destKeyStorePassword"},
+		description = "Password of the destination Key Store. Defaults to the same of --srcKeyStorePassword.")
+	private String destKeyStorePassword;
 
 	@CommandLine.Option(
 		names = {"-o", "--outDirPath"},
@@ -42,13 +45,24 @@ public class CertificateImporterOptions {
 	private String certificatesOutputDirPath;
 
 	@CommandLine.Option(
-		names = {"-A", "--importIntoKeyStore"}, defaultValue = "true")
+		names = {"-i", "--import"}, defaultValue = "false",
+		description = "Defines if the downloaded certificates will be imported into the destination KeyStore. Defaults to false.")
 	private boolean importIntoKeyStore = false;
 
 	@CommandLine.Parameters(
 		arity = "1..*", paramLabel = "domains",
 		description = "Domains to download root CA certificates from.")
 	private String[] domains;
+
+	@CommandLine.Option(
+		names = {"--httpSecurityProtocol"}, defaultValue = DEFAULT_SECURITY_PROTOCOL_VERSION,
+		description = "Security protocol version used when stabilizing connection with the servers.")
+	private String httpSecurityProtocol = DEFAULT_SECURITY_PROTOCOL_VERSION;
+
+	@CommandLine.Option(
+		names = {"--httpPort"}, defaultValue = DEFAULT_SECURITY_PROTOCOL_PORT,
+		description = "The default port used when stabilizing connection with the servers.")
+	private int httpPort = Integer.valueOf(DEFAULT_SECURITY_PROTOCOL_PORT);
 
 	public String[] getDomains() {
 		return Optional.ofNullable(this.domains).orElse(new String[0]);
@@ -58,21 +72,33 @@ public class CertificateImporterOptions {
 		return this.certificatesOutputDirPath != null;
 	}
 
-	public File getSrcKeyStoreFile() {
-		if (this.keyStorePath != null) {
-			return new File(this.keyStorePath);
+	public String getDestKeyStorePath() {
+		if (this.destKeyStorePath == null) {
+			return this.getSrcKeyStorePath();
 		}
-		File dir = new File(System.getProperty("java.home") + File.separator + "lib" + File.separator + "security");
-		return new File(dir, CACERTS_FILENAME);
+		return this.destKeyStorePath;
 	}
 
-	public String getKeyStoreFileName() {
-		String realKeyStorePath = getSrcKeyStoreFile().getAbsolutePath();
-		int lastSeparatorIndex = realKeyStorePath.lastIndexOf(File.separatorChar);
-		if (lastSeparatorIndex != -1) {
-			return realKeyStorePath.substring(lastSeparatorIndex);
+	public String getDestKeyStorePassword() {
+		if (this.destKeyStorePassword == null) {
+			return this.getSrcKeyStorePassword();
 		}
-		return realKeyStorePath;
+		return this.destKeyStorePassword;
+	}
+
+	public String getSrcKeyStorePath() {
+		if (this.srcKeyStorePath != null) {
+			return this.srcKeyStorePath;
+		}
+		return System.getProperty("java.home") + File.separator + "lib" + File.separator + "security" + File.separator + CACERTS_FILENAME;
+	}
+
+	public File getSrcKeyStoreFile() {
+		return new File(this.getSrcKeyStorePath());
+	}
+
+	public File getDestKeyStoreFile() {
+		return new File(this.getDestKeyStorePath());
 	}
 
 }
