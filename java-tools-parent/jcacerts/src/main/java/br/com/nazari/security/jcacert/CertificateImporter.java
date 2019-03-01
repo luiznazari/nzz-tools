@@ -35,6 +35,8 @@ class CertificateImporter {
 
 			Map<String, X509Certificate> hostsCertificates = this.downloadDomainsCertificatesInto(keyStore);
 
+			this.logSuccess();
+
 			if (this.options.isImportIntoKeyStore()) {
 				this.importCertificatesToDestinationKeyStore(keyStore);
 			}
@@ -141,7 +143,7 @@ class CertificateImporter {
 		}
 
 		File outDir = new File(this.options.getCertificatesOutputDirPath());
-		log.info(String.format("Trusted certificates stored in: \"%s\".", outDir.getAbsolutePath()));
+		log.info(String.format("Certificates stored in: \"%s\".", outDir.getAbsolutePath()));
 	}
 
 	/**
@@ -161,6 +163,13 @@ class CertificateImporter {
 		String ctrDirPath = this.options.getCertificatesOutputDirPath() + File.separator;
 		File crtFile = new File(ctrDirPath, String.format(TEMPLATE_CRT_FILE, alias));
 		FileUtils.writeStringToFile(crtFile, sw.toString(), StandardCharsets.UTF_8);
+	}
+
+	private void logSuccess() {
+		log.info("");
+		log.info("------------------------------------------------------------------------");
+		log.info("SUCCESS!");
+		log.info("------------------------------------------------------------------------");
 	}
 
 }

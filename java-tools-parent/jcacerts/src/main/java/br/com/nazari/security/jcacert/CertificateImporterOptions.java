@@ -25,23 +25,23 @@ public class CertificateImporterOptions {
 
 	@CommandLine.Option(
 		names = {"-p", "--srcKeyStorePassword"}, defaultValue = DEFAULT_KEY_STORE_PASSWORD,
-		description = "Password of the target Key Store.")
+		description = "Password of the target Key Store. Defaults to " + DEFAULT_KEY_STORE_PASSWORD + ".")
 	private String srcKeyStorePassword = DEFAULT_KEY_STORE_PASSWORD;
 
 	@CommandLine.Option(
 		names = {"-K", "--destKeyStorePath"},
-		description = "Absolute path of the destination Key Store. Defaults to the same of --srcKeyStorePath.")
+		description = "Absolute path of the destination Key Store. Defaults to --srcKeyStorePath.")
 	@Getter(AccessLevel.NONE)
 	private String destKeyStorePath;
 
 	@CommandLine.Option(
 		names = {"-P", "--destKeyStorePassword"},
-		description = "Password of the destination Key Store. Defaults to the same of --srcKeyStorePassword.")
+		description = "Password of the destination Key Store. Defaults to --srcKeyStorePassword.")
 	private String destKeyStorePassword;
 
 	@CommandLine.Option(
 		names = {"-o", "--outDirPath"},
-		description = "Output directory to save the downloaded server certificates.")
+		description = "Absolute directory path where the downloaded certificates will be saved.")
 	private String certificatesOutputDirPath;
 
 	@CommandLine.Option(
