@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import javax.net.ssl.*;
 import java.io.IOException;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.security.*;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
@@ -80,7 +81,7 @@ class DomainCertificateDownloader {
 			 * the KeyStore is not yet generated.
 			 */
 
-		} catch (SSLException | SocketException e) {
+		} catch (SSLException | SocketException | UnknownHostException e) {
 			log.error(e);
 		}
 
