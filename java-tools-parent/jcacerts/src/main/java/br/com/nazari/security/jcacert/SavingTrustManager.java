@@ -1,4 +1,4 @@
-package br.com.luiz.nazari.security;
+package br.com.nazari.security.jcacert;
 
 import lombok.AccessLevel;
 import lombok.Getter;

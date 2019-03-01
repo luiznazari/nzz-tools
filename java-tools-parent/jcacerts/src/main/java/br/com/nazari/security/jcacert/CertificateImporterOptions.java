@@ -1,4 +1,4 @@
-package br.com.luiz.nazari.security.config;
+package br.com.nazari.security.jcacert;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -58,7 +58,7 @@ public class CertificateImporterOptions {
 		return this.certificatesOutputDirPath != null;
 	}
 
-	public File getKeyStoreFile() {
+	public File getSrcKeyStoreFile() {
 		if (this.keyStorePath != null) {
 			return new File(this.keyStorePath);
 		}
@@ -67,7 +67,7 @@ public class CertificateImporterOptions {
 	}
 
 	public String getKeyStoreFileName() {
-		String realKeyStorePath = getKeyStoreFile().getAbsolutePath();
+		String realKeyStorePath = getSrcKeyStoreFile().getAbsolutePath();
 		int lastSeparatorIndex = realKeyStorePath.lastIndexOf(File.separatorChar);
 		if (lastSeparatorIndex != -1) {
 			return realKeyStorePath.substring(lastSeparatorIndex);

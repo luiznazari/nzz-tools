@@ -1,6 +1,5 @@
-package br.com.luiz.nazari.security;
+package br.com.nazari.security.jcacert;
 
-import br.com.luiz.nazari.security.config.CertificateImporterOptions;
 import picocli.CommandLine;
 
 /**
@@ -8,8 +7,8 @@ import picocli.CommandLine;
  */
 @CommandLine.Command(
 	name = "jcacert",
-	version = SecurityConstants.COMMAND_VERSION,
-	description = "Java public root CA certificates Importer v" + SecurityConstants.COMMAND_VERSION)
+	version = SecurityConstants.JCACERT_COMMAND_VERSION,
+	description = "Java public root CA certificates Importer v" + SecurityConstants.JCACERT_COMMAND_VERSION)
 final class JCaCertCommand extends CertificateImporterOptions implements Runnable {
 
 	@CommandLine.Option(names = "--version", description = "Displays version information.",
