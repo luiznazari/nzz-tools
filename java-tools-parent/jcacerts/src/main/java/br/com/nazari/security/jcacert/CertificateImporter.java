@@ -110,6 +110,8 @@ class CertificateImporter {
 		File destinationKeyStoreFile = this.options.getDestKeyStoreFile();
 		this.backupFile(destinationKeyStoreFile);
 
+		FileUtils.forceMkdirParent(destinationKeyStoreFile);
+
 		try (FileOutputStream out = new FileOutputStream(destinationKeyStoreFile)) {
 			keyStore.store(out, passPhrase);
 		}

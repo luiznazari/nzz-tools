@@ -18,7 +18,7 @@ public class CertificateImporterOptions {
 	private static final String DEFAULT_SECURITY_PROTOCOL_VERSION = "TLSv1.2";
 
 	@CommandLine.Option(
-		names = {"-k", "--srcKeyStorePath"},
+		names = {"-k", "--srcKeyStore"},
 		description = "Absolute path of the target Key Store. Defaults to ${java.home}/lib/security/cacerts.")
 	@Getter(AccessLevel.NONE)
 	private String srcKeyStorePath;
@@ -29,7 +29,7 @@ public class CertificateImporterOptions {
 	private String srcKeyStorePassword = DEFAULT_KEY_STORE_PASSWORD;
 
 	@CommandLine.Option(
-		names = {"-K", "--destKeyStorePath"},
+		names = {"-K", "--destKeyStore"},
 		description = "Absolute path of the destination Key Store. Defaults to --srcKeyStorePath.")
 	@Getter(AccessLevel.NONE)
 	private String destKeyStorePath;
@@ -40,7 +40,7 @@ public class CertificateImporterOptions {
 	private String destKeyStorePassword;
 
 	@CommandLine.Option(
-		names = {"-o", "--outDirPath"},
+		names = {"-o", "--outCrtDir"},
 		description = "Absolute directory path where the downloaded certificates will be saved.")
 	private String certificatesOutputDirPath;
 

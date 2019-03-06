@@ -8,10 +8,10 @@ import picocli.CommandLine;
 @CommandLine.Command(
 	name = "jcacert",
 	version = SecurityConstants.JCACERT_COMMAND_VERSION,
-	description = "Java public root CA certificates Importer v" + SecurityConstants.JCACERT_COMMAND_VERSION)
+	description = "Java public root CA certificates importer v" + SecurityConstants.JCACERT_COMMAND_VERSION)
 final class JCaCertCommand extends CertificateImporterOptions implements Runnable {
 
-	@CommandLine.Option(names = "--version", description = "Displays version information.",
+	@CommandLine.Option(names = {"-v", "--version"}, description = "Displays version information.",
 		versionHelp = true, defaultValue = "true")
 	private boolean versionOption = true;
 
