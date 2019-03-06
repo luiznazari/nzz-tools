@@ -7,6 +7,7 @@
     <groupId>br.com.nazari.security</groupId>
     <artifactId>jcacerts</artifactId>
     <version>1.0.3</version>
+    <description>Java public root CA certificates importer</description>
 
     <properties>
         <java.version>1.8</java.version>
