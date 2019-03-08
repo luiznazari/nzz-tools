@@ -4,54 +4,24 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>br.com.nzz.tools</groupId>
-    <artifactId>test-api</artifactId>
-    <version>1.0.0</version>
+    <parent>
+        <groupId>br.com.nzz.tools</groupId>
+        <artifactId>nzz-tools-parent</artifactId>
+        <version>1.0.1</version>
+    </parent>
 
+    <artifactId>test-api</artifactId>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
     <properties>
-        <java.version>1.8</java.version>
         <junit.version>4.12</junit.version>
-        <lombok.version>1.16.14</lombok.version>
-        <mockito.version>1.10.19</mockito.version>
         <spring.version>2.0.8.RELEASE</spring.version>
         <vertx.jspare.version>3.1.0</vertx.jspare.version>
+        <spring.boot.version>2.1.1.RELEASE</spring.boot.version>
     </properties>
 
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
     <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>${mockito.version}</version>
-        </dependency>
-
-        <!-- Code Productivity -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
         <!-- =-=-=-=-=: Provided test environments :=-=-=-=-= -->
 
         <!-- Vert.x / Jspare -->
@@ -74,13 +44,26 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Spring -->
+        <!-- Spring / Spring Boot -->
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
-            <version>2.0.8.RELEASE</version>
+            <version>${spring.version}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring.boot.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>${spring.boot.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
 </project>

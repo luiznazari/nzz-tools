@@ -1,7 +1,7 @@
 package br.com.nzz.spring.ws.exception;
 
-import br.com.senior.validation.message.ErrorMessage;
-import br.com.senior.validation.message.I18n;
+import br.com.nzz.validation.message.ErrorMessage;
+import br.com.nzz.validation.message.I18n;
 import com.google.common.collect.Lists;
 import lombok.Getter;
 

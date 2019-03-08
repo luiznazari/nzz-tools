@@ -3,9 +3,8 @@ package br.com.nzz.spring.ws.soap;
 import br.com.nzz.spring.ws.NzzWsConstants;
 import br.com.nzz.spring.ws.exception.WebServiceException;
 import br.com.nzz.spring.ws.exception.WebServiceInternalException;
-import br.com.senior.test.UnitTest;
+import br.com.nzz.test.UnitTest;
 import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.oxm.XmlMappingException;
@@ -67,8 +66,8 @@ public class SoapRequestTest extends UnitTest {
 			.andRespond(ResponseCreators.withClientOrSenderFault("SOAP FAULT MESSAGE", Locale.getDefault()));
 
 		try {
-			envelopeSoap.send(StringUtils.EMPTY);
-			//fail("Should have thrown an exception.");
+			envelopeSoap.send("");
+			fail("Should have thrown an exception.");
 		} catch (WebServiceException e) {
 			// Expected exception.
 		} finally {
@@ -111,7 +110,7 @@ public class SoapRequestTest extends UnitTest {
 					throw new WebServiceInternalException("Lol", new IOException("fake.error.test"));
 				})
 				.send("false");
-			//fail("Should have thrown an exception.");
+			fail("Should have thrown an exception.");
 
 		} catch (WebServiceException e) {
 			Assert.assertEquals(NzzWsConstants.SOAP_INTEGRATION_ERROR, e.getError().getMessageKey());
@@ -133,7 +132,7 @@ public class SoapRequestTest extends UnitTest {
 				when(jaxbContext.createMarshaller()).thenReturn(mock(Marshaller.class));
 				// when(jaxbContext.createUnmarshaller()).thenReturn(mock(Unmarshaller.class))
 			} catch (JAXBException e) {
-				//fail(e);
+				fail(e);
 			}
 		}
 

@@ -1,4 +1,4 @@
-# Senior Java Test Library
+# Java Test Library
 
 This library provides base and utility classes for tests and ways to ease test writting.
 
@@ -26,8 +26,8 @@ This library provides base and utility classes for tests and ways to ease test w
 In order to test an Jspare application, you must specify the application's `io.vertx.core.Verticle` class, as follows:
 
 ```java
-import br.com.senior.test.TestVerticle;
-import br.com.senior.test.IntegrationTestJspare;
+import br.com.nzz.test.TestVerticle;
+import br.com.nzz.test.IntegrationTestJspare;
 
 import your.app.domain.AppVerticle.class
 
@@ -60,10 +60,4 @@ public class JspareTest extends IntegrationTestJspare {
     private YourRepository repository;
 
 }
-```
 
-### Examples:
-
-- [br.com.senior.volkswagen.routes.MetricRouteTest.java][MetricRouteTest]
-
-[MetricRouteTest]: http://git.senior.com.br/software-sob-medida/volkswagen-riscos-ergonomicos/blob/master/volkswagen-api/src/test/java/br/com/senior/volkswagen/routes/MetricRouteTest.java

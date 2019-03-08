@@ -1,4 +1,4 @@
-# Senior Java Validation API
+# Java Validation API
 
 The Validation API defines classes for bean and custom validation. It's useful to decouple validations from logic.
 
