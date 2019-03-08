@@ -45,13 +45,13 @@ public class SoapRequestTest extends UnitTest {
 		MockWebServiceServer mockServer = MockWebServiceServer.createServer(envelopeSoap.getWsGateway());
 		mockServer.expect(anything());
 		marshaller.setResponse(Boolean.FALSE);
-		envelopeSoap.environment(DEVELOPMENT).send("false");
+		envelopeSoap.withEnvironment(DEVELOPMENT).send("false");
 		mockServer.verify();
 
 		mockServer = MockWebServiceServer.createServer(envelopeSoap.getWsGateway());
 		mockServer.expect(anything());
 		marshaller.setResponse(Boolean.TRUE);
-		envelopeSoap.environment(PRODUCTION).send("true");
+		envelopeSoap.withEnvironment(PRODUCTION).send("true");
 		mockServer.verify();
 	}
 
@@ -87,7 +87,7 @@ public class SoapRequestTest extends UnitTest {
 		WebServiceBiFunction<Jaxb2Marshaller, Object, Boolean> randomResponseExtractor = (m, response) -> new Random().nextBoolean();
 
 		envelopeSoap
-			.responseExtractor(randomResponseExtractor)
+			.withResponseExtractor(randomResponseExtractor)
 			.send("false");
 
 		mockServer.verify();
@@ -106,7 +106,7 @@ public class SoapRequestTest extends UnitTest {
 
 		try {
 			envelopeSoap
-				.responseExtractor((m, response) -> {
+				.withResponseExtractor((m, response) -> {
 					throw new WebServiceInternalException("Lol", new IOException("fake.error.test"));
 				})
 				.send("false");
