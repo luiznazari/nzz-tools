@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
  */
 public final class NzzDateUtils {
 
-	private static final ZoneId BR_ZONE_ID = ZoneId.of("America/Sao_Paulo");
+	public static final ZoneId BR_ZONE_ID = ZoneId.of("America/Sao_Paulo");
 
 	public static final String BR_DATE = "dd/MM/yyyy";
 

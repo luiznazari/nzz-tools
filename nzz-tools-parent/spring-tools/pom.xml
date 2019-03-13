@@ -16,6 +16,7 @@
 
     <modules>
         <module>spring-ws-tools</module>
+        <module>spring-ws-tools-test</module>
     </modules>
 
     <properties>
@@ -30,6 +31,19 @@
                 <version>${spring.boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>br.com.nzz.tools</groupId>
+                <artifactId>spring-ws-tools</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>br.com.nzz.tools</groupId>
+                <artifactId>spring-ws-tools-test</artifactId>
+                <version>${project.version}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

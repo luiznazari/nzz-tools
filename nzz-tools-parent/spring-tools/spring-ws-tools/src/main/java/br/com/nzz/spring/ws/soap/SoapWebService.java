@@ -25,4 +25,9 @@ public class SoapWebService {
 		return this.getUrl(environment) + "?WSDL";
 	}
 
+	public static SoapWebService from(String url) {
+		return new SoapWebService(url, url);
+	}
+
+
 }

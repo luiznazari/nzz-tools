@@ -60,7 +60,7 @@ public class SoapRequest<P, R> {
 	private Environment environment;
 	private final SoapWebService webService;
 	private final Jaxb2Marshaller marshaller;
-	@Getter(AccessLevel.PACKAGE)
+	@Getter
 	private final EnvelopeSoapGatewaySupport wsGateway;
 
 	public SoapRequest(SoapWebService soapWebService, Jaxb2Marshaller marshaller) {
@@ -69,9 +69,14 @@ public class SoapRequest<P, R> {
 		this.wsGateway = new EnvelopeSoapGatewaySupport(marshaller);
 	}
 
+	public SoapRequest(String url, Jaxb2Marshaller marshaller) {
+		this(SoapWebService.from(url), marshaller);
+	}
+
 	public final R send(P payload) {
 		try {
 			String wsdlUrl = this.webService.getUrlWsdl(this.environment);
+			log.trace(() -> "Preparing SOAP request...");
 			return wsGateway.getWebServiceTemplate().sendAndReceive(wsdlUrl,
 				configureRequest(payload), defaultResponseExtractor());
 
@@ -115,13 +120,13 @@ public class SoapRequest<P, R> {
 
 	private WebServiceMessageCallback configureRequest(P payload) {
 		return message -> {
-			SoapRequest.logSoapMessage("Sending SOAP request", message);
-
 			MarshallingUtils.marshal(marshaller, payload, message);
 
 			if (this.soapAction != null) {
 				new SoapActionCallback(this.soapAction).doWithMessage(message);
 			}
+
+			SoapRequest.logSoapMessage("Sending SOAP request", message);
 		};
 	}
 
