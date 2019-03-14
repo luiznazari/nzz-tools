@@ -15,7 +15,6 @@
     <packaging>jar</packaging>
 
     <properties>
-        <apache.commons-lang3.version>3.8.1</apache.commons-lang3.version>
     </properties>
 
     <dependencies>
