@@ -5,13 +5,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * Especificação dos WebServices SOAP consumidos pela aplicação.
+ * Defines a SOAP WebServices with two possible URLs, one for production,
+ * one for development.
  *
  * @author Luiz Felipe Nazari
  */
 @Getter
 @AllArgsConstructor
 public class SoapWebService {
+
+	private static final String WSDL_PARAM = "?WSDL";
 
 	private final String urlProduction;
 
@@ -22,7 +25,11 @@ public class SoapWebService {
 	}
 
 	public String getUrlWsdl(Environment environment) {
-		return this.getUrl(environment) + "?WSDL";
+		String soapUrl = this.getUrl(environment);
+		if (!soapUrl.endsWith(WSDL_PARAM)) {
+			return this.getUrl(environment) + WSDL_PARAM;
+		}
+		return soapUrl;
 	}
 
 	public static SoapWebService from(String url) {

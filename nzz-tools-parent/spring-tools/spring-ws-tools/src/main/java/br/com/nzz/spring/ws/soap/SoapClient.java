@@ -5,7 +5,7 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
 
 /**
- * Interface para representar um cliente SOAP.
+ * Interface to represent an SOAP Client.
  *
  * @author Luiz.Nazari
  */

@@ -40,25 +40,25 @@ public class SoapRequestTest extends UnitTest {
 	@Test
 	public void mustSendSoapRequestToBothEnvironments() {
 		SoapEnvelopTestJaxb2Marshaller marshaller = new SoapEnvelopTestJaxb2Marshaller();
-		SoapRequest<String, Boolean> envelopeSoap = new SoapRequest<>(soapWs, marshaller);
+		TypedSoapRequest<String, Boolean> envelopeSoap = new TypedSoapRequest<>(soapWs, marshaller);
 
 		MockWebServiceServer mockServer = MockWebServiceServer.createServer(envelopeSoap.getWsGateway());
 		mockServer.expect(anything());
 		marshaller.setResponse(Boolean.FALSE);
-		envelopeSoap.withEnvironment(DEVELOPMENT).send("false");
+		envelopeSoap.withEnvironment(DEVELOPMENT).sendSync("false");
 		mockServer.verify();
 
 		mockServer = MockWebServiceServer.createServer(envelopeSoap.getWsGateway());
 		mockServer.expect(anything());
 		marshaller.setResponse(Boolean.TRUE);
-		envelopeSoap.withEnvironment(PRODUCTION).send("true");
+		envelopeSoap.withEnvironment(PRODUCTION).sendSync("true");
 		mockServer.verify();
 	}
 
 	@Test
 	public void shouldThrowExceptionWhenReceivesFaultResponse() {
 		SoapEnvelopTestJaxb2Marshaller marshaller = new SoapEnvelopTestJaxb2Marshaller();
-		SoapRequest<String, Boolean> envelopeSoap = new SoapRequest<>(soapWs, marshaller);
+		TypedSoapRequest<String, Boolean> envelopeSoap = new TypedSoapRequest<>(soapWs, marshaller);
 
 		MockWebServiceServer mockServer = MockWebServiceServer.createServer(envelopeSoap.getWsGateway());
 		mockServer
@@ -66,7 +66,7 @@ public class SoapRequestTest extends UnitTest {
 			.andRespond(ResponseCreators.withClientOrSenderFault("SOAP FAULT MESSAGE", Locale.getDefault()));
 
 		try {
-			envelopeSoap.send("");
+			envelopeSoap.sendSync("");
 			fail("Should have thrown an exception.");
 		} catch (WebServiceException e) {
 			// Expected exception.
@@ -78,7 +78,7 @@ public class SoapRequestTest extends UnitTest {
 	@Test
 	public void mustExtractMessageWithCustomResponseExtractor() {
 		SoapEnvelopTestJaxb2Marshaller marshaller = new SoapEnvelopTestJaxb2Marshaller();
-		SoapRequest<String, Boolean> envelopeSoap = new SoapRequest<>(soapWs, marshaller);
+		TypedSoapRequest<String, Boolean> envelopeSoap = new TypedSoapRequest<>(soapWs, marshaller);
 
 		MockWebServiceServer mockServer = MockWebServiceServer.createServer(envelopeSoap.getWsGateway());
 		mockServer.expect(anything());
@@ -88,7 +88,7 @@ public class SoapRequestTest extends UnitTest {
 
 		envelopeSoap
 			.withResponseExtractor(randomResponseExtractor)
-			.send("false");
+			.sendSync("false");
 
 		mockServer.verify();
 	}
@@ -96,7 +96,7 @@ public class SoapRequestTest extends UnitTest {
 	@Test
 	public void shouldHandleInternalErrorWithCustomResponseExtractor() {
 		SoapEnvelopTestJaxb2Marshaller marshaller = new SoapEnvelopTestJaxb2Marshaller();
-		SoapRequest<String, Boolean> envelopeSoap = new SoapRequest<>(soapWs, marshaller);
+		TypedSoapRequest<String, Boolean> envelopeSoap = new TypedSoapRequest<>(soapWs, marshaller);
 
 		MockWebServiceServer mockServer = MockWebServiceServer.createServer(envelopeSoap.getWsGateway());
 		mockServer
@@ -109,7 +109,7 @@ public class SoapRequestTest extends UnitTest {
 				.withResponseExtractor((m, response) -> {
 					throw new WebServiceInternalException("Lol", new IOException("fake.error.test"));
 				})
-				.send("false");
+				.sendSync("false");
 			fail("Should have thrown an exception.");
 
 		} catch (WebServiceException e) {

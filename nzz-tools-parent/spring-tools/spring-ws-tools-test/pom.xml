@@ -7,11 +7,11 @@
     <parent>
         <artifactId>spring-tools-parent</artifactId>
         <groupId>br.com.nzz.tools</groupId>
-        <version>1.0.1</version>
+        <version>1.0.2</version>
     </parent>
 
     <artifactId>spring-ws-tools-test</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <packaging>jar</packaging>
 
     <dependencies>

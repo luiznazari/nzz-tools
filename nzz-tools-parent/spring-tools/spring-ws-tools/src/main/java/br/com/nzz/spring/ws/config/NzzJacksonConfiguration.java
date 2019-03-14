@@ -16,6 +16,18 @@ import org.springframework.context.annotation.Import;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.IOException;
 
+/**
+ * Spring Boot configuration class to configure all ObjectMapper with nzz's serializers.
+ * <br>
+ * Usage:
+ * <pre>
+ * @Configuration
+ * @Import(NzzJacksonConfiguration.class)
+ * public class AnySpringBootConfigurationClass {
+ *     ...
+ * }
+ * </pre>
+ */
 @Configuration
 @Import(JacksonAutoConfiguration.class)
 public class NzzJacksonConfiguration {

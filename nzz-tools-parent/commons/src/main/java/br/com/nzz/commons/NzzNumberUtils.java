@@ -29,7 +29,7 @@ public abstract class NzzNumberUtils {
 		try {
 			return extractNumberFromText(text);
 		} catch (ParseException e) {
-			// Should never get here, the number format is already being validated before the parsing.
+			// Should never resolve here, the number format is already being validated before the parsing.
 			throw new IllegalArgumentException("Could not extract number from string \"" + text + "\"", e);
 		}
 	}
