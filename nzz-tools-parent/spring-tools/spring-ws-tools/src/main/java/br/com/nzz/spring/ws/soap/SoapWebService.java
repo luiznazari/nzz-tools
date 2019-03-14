@@ -3,6 +3,7 @@ package br.com.nzz.spring.ws.soap;
 import br.com.nzz.spring.ws.Environment;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Defines a SOAP WebServices with two possible URLs, one for production,
@@ -26,7 +27,7 @@ public class SoapWebService {
 
 	public String getUrlWsdl(Environment environment) {
 		String soapUrl = this.getUrl(environment);
-		if (!soapUrl.endsWith(WSDL_PARAM)) {
+		if (!StringUtils.endsWithIgnoreCase(soapUrl, WSDL_PARAM)) {
 			return this.getUrl(environment) + WSDL_PARAM;
 		}
 		return soapUrl;
