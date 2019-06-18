@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>br.com.nzz.tools</groupId>
+        <artifactId>nzz-tools-parent</artifactId>
+        <version>1.1.0</version>
+    </parent>
+
+    <artifactId>nzz-validation-api</artifactId>
+    <version>1.1.0</version>
+    <packaging>jar</packaging>
+
+    <properties>
+        <guava.version>18.0</guava.version>
+        <slf4j.version>1.7.25</slf4j.version>
+        <javax.el.version>2.2.4</javax.el.version>
+        <hibernate.version>5.2.4.Final</hibernate.version>
+        <vertx.jspare.jpa.version>3.0.1</vertx.jspare.jpa.version>
+        <vertx.jspare.unit.version>3.1.0</vertx.jspare.unit.version>
+        <spring-context.version>5.1.2.RELEASE</spring-context.version>
+        <javax.validation.api.version>1.1.0.Final</javax.validation.api.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>br.com.nzz.tools</groupId>
+            <artifactId>nzz-commons</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.el</groupId>
+            <artifactId>javax.el-api</artifactId>
+            <version>${javax.el.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${javax.validation.api.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+        <!-- Code Productivity -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
+
+        <!-- Test dependencies -->
+        <dependency>
+            <groupId>br.com.nzz.tools</groupId>
+            <artifactId>nzz-test-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- =-=-=-=-=: Provided DI containers :=-=-=-=-= -->
+
+        <!-- Vert.x / Jspare -->
+        <dependency>
+            <groupId>org.jspare.vertx</groupId>
+            <artifactId>vertx-jspare-unit</artifactId>
+            <version>${vertx.jspare.unit.version}</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jspare.jpa</groupId>
+            <artifactId>jspare-jpa</artifactId>
+            <version>${vertx.jspare.jpa.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring-context.version}</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
+</project>

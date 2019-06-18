@@ -1,22 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>br.com.nzz.tools</groupId>
     <artifactId>nzz-tools-parent</artifactId>
-    <version>1.0.2</version>
-
     <packaging>pom</packaging>
+    <version>1.1.0</version>
 
     <modules>
-        <module>test-api</module>
-        <module>validation-api</module>
-        <module>commons</module>
         <module>jcacerts</module>
-        <module>spring-tools</module>
+        <module>nzz-test-api</module>
+        <module>nzz-validation-api</module>
+        <module>nzz-commons</module>
+        <module>nzz-spring-tools</module>
     </modules>
+
+    <developers>
+        <developer>
+            <name>Luiz Felipe Nazari</name>
+            <url>https://github.com/luiznazari</url>
+        </developer>
+    </developers>
 
     <properties>
         <java.version>1.8</java.version>
@@ -33,6 +39,8 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- =-=-=-=-=: NZZ :=-=-=-=-= -->
+
             <dependency>
                 <groupId>br.com.nzz.tools</groupId>
                 <artifactId>nzz-commons</artifactId>
@@ -41,21 +49,31 @@
 
             <dependency>
                 <groupId>br.com.nzz.tools</groupId>
-                <artifactId>validation-api</artifactId>
+                <artifactId>nzz-validation-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>br.com.nzz.tools</groupId>
-                <artifactId>test-api</artifactId>
+                <artifactId>nzz-test-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>br.com.nzz.tools</groupId>
-                <artifactId>spring-tools-parent</artifactId>
+                <artifactId>nzz-spring-tools-parent</artifactId>
                 <version>${project.version}</version>
             </dependency>
+
+            <!-- =-=-=-=-=: MISC :=-=-=-=-= -->
+
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>${log4j2.version}</version>
+            </dependency>
+
+            <!-- =-=-=-=-=: TEST :=-=-=-=-= -->
 
             <dependency>
                 <groupId>junit</groupId>
@@ -68,34 +86,33 @@
                 <artifactId>mockito-core</artifactId>
                 <version>${mockito.version}</version>
             </dependency>
-
-            <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-core</artifactId>
-                <version>${log4j2.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
+        <!-- =-=-=-=-=: MISC :=-=-=-=-= -->
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- =-=-=-=-=: TEST :=-=-=-=-= -->
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>${mockito.version}</version>
-        </dependency>
-
-        <!-- Code Productivity -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-            <scope>provided</scope>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -112,6 +129,32 @@
                         <encoding>${project.encoding}</encoding>
                     </configuration>
                 </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>attach-javadocs</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -119,6 +162,16 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
