@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <artifactId>nzz-spring-tools-parent</artifactId>
+
+    <dependencies>
+        <dependency>
+            <artifactId>log4j-core</artifactId>
+            <groupId>org.apache.logging.log4j</groupId>
+        </dependency>
+
+        <dependency>
+            <artifactId>nzz-test-api</artifactId>
+            <groupId>br.com.nzz.tools</groupId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <!-- Import dependency management from Spring Boot -->
+                <artifactId>spring-boot-dependencies</artifactId>
+                <groupId>org.springframework.boot</groupId>
+                <scope>import</scope>
+                <type>pom</type>
+                <version>${spring.boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <artifactId>nzz-spring-tools</artifactId>
+                <groupId>br.com.nzz.tools</groupId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <artifactId>nzz-spring-tools-ws</artifactId>
+                <groupId>br.com.nzz.tools</groupId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <artifactId>nzz-spring-tools-ws-test</artifactId>
+                <groupId>br.com.nzz.tools</groupId>
+                <scope>test</scope>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <modelVersion>4.0.0</modelVersion>
+    <modules>
+        <module>nzz-spring-tools</module>
+        <module>nzz-spring-tools-ws</module>
+        <module>nzz-spring-tools-ws-test</module>
+    </modules>
+
+    <packaging>pom</packaging>
+
+    <parent>
+        <artifactId>nzz-tools-parent</artifactId>
+        <groupId>br.com.nzz.tools</groupId>
+        <version>1.1.0</version>
+    </parent>
+
+    <properties></properties>
+
+    <version>1.1.0</version>
+
+</project>
