@@ -7,14 +7,14 @@
     <groupId>br.com.nzz.tools</groupId>
     <artifactId>nzz-tools-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
 
     <modules>
         <module>jcacerts</module>
         <module>nzz-test-api</module>
         <module>nzz-validation-api</module>
         <module>nzz-commons</module>
-        <module>nzz-spring-tools</module>
+        <module>nzz-spring-tools-parent</module>
     </modules>
 
     <developers>
