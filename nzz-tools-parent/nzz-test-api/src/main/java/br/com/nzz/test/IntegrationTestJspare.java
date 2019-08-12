@@ -120,6 +120,10 @@ public abstract class IntegrationTestJspare extends UnitTestSpring {
 		return new JsonObject();
 	}
 
+	protected JsonArray jsonArray() {
+		return new JsonArray();
+	}
+
 	protected UriBuilder uri(String uri) {
 		return new UriBuilder(uri);
 	}

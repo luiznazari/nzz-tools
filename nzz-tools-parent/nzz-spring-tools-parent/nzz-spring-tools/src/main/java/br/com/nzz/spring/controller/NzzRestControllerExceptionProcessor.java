@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -131,10 +132,10 @@ public class NzzRestControllerExceptionProcessor {
 	 * @param exception {@link ServletRequestBindingException}
 	 * @return JSON {@link ApiErrorMessage}
 	 */
-	@ExceptionHandler(ServletRequestBindingException.class)
-	@ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
+	@ExceptionHandler({MissingServletRequestParameterException.class, ServletRequestBindingException.class})
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
 	@ResponseBody
-	public List<ErrorMessage> exceptionRule(ServletRequestBindingException exception) {
+	public List<ErrorMessage> missingParameterExceptionRule(Exception exception) {
 		log.error(exception.getMessage(), exception);
 		return new ApiErrorMessage(NzzConstants.INVALID_REQUEST_ERROR, exception.getMessage())
 			.asErrorList();
