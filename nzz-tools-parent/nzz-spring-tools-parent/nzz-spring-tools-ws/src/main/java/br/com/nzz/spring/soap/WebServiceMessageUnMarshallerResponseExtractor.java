@@ -7,7 +7,7 @@ import org.springframework.ws.support.MarshallingUtils;
 
 import java.io.IOException;
 
-class WebServiceMessageUnMarshallerResponseExtractor<R> extends AbstractUnMarshallingResponseExtractor<R, WebServiceMessage> implements WebServiceMessageExtractor<R> {
+final class WebServiceMessageUnMarshallerResponseExtractor<R> extends AbstractUnMarshallingResponseExtractor<R, WebServiceMessage> implements WebServiceMessageExtractor<R> {
 
 	WebServiceMessageUnMarshallerResponseExtractor(Jaxb2Marshaller marshaller, WebServiceBiFunction<Jaxb2Marshaller, Object, R> responseExtractorFunction) {
 		super(marshaller, responseExtractorFunction);

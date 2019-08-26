@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import javax.xml.transform.Source;
 
-class SourceUnMarshallerResponseExtractor<R> extends AbstractUnMarshallingResponseExtractor<R, Source> implements SourceExtractor<R> {
+final class SourceUnMarshallerResponseExtractor<R> extends AbstractUnMarshallingResponseExtractor<R, Source> implements SourceExtractor<R> {
 
 	SourceUnMarshallerResponseExtractor(Jaxb2Marshaller marshaller, WebServiceBiFunction<Jaxb2Marshaller, Object, R> responseExtractorFunction) {
 		super(marshaller, responseExtractorFunction);

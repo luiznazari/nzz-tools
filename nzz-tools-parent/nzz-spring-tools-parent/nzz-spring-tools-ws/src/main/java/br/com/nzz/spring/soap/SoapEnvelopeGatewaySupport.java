@@ -28,8 +28,12 @@ final class SoapEnvelopeGatewaySupport extends WebServiceGatewaySupport {
 	private Integer connectionTimeoutInSeconds;
 
 	SoapEnvelopeGatewaySupport(Jaxb2Marshaller marshaller) {
+		this();
 		this.setMarshaller(marshaller);
 		this.setUnmarshaller(marshaller);
+	}
+
+	SoapEnvelopeGatewaySupport() {
 		this.configureTimeout();
 		this.getWebServiceTemplate().setFaultMessageResolver(new SoapEnvelopeFaultMessageResolver());
 	}

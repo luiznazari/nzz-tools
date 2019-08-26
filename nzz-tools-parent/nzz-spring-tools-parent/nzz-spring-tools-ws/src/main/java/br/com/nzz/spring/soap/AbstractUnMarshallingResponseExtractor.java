@@ -21,6 +21,7 @@ abstract class AbstractUnMarshallingResponseExtractor<R, D> {
 	R extractMessageData(D messageData) throws IOException {
 		try {
 			// Clear marshaller's bindings with previous result class.
+			// noinspection ConstantConditions
 			marshaller.setMappedClass(null);
 			R response;
 
