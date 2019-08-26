@@ -18,7 +18,7 @@ import javax.xml.transform.stream.StreamResult;
 
 final class SoapRequestLogger {
 
-	private static final Logger log = LogManager.getLogger(MarshallingSoapRequest.class);
+	private static final Logger log = LogManager.getLogger(SoapRequest.class);
 
 	static void logSoapMessage(String message, WebServiceMessage soapMessage) {
 		logSoapMessage(message, () -> soapMessageAsString(soapMessage));

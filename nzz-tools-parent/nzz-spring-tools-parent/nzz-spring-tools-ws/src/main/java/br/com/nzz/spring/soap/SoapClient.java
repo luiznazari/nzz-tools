@@ -6,7 +6,7 @@ import br.com.nzz.spring.adapter.AdapterLoader;
 
 
 /**
- * Interface to represent an SOAP Client.
+ * Interface to represent a SOAP Client.
  *
  * @author Luiz.Nazari
  */

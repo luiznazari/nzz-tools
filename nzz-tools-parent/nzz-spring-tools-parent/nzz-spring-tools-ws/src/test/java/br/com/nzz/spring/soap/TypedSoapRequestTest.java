@@ -28,20 +28,21 @@ import lombok.Setter;
 
 import static org.springframework.ws.test.client.RequestMatchers.anything;
 
-public class SoapRequestTest extends UnitTest {
+public class TypedSoapRequestTest extends UnitTest {
 
 	private final SoapWebService soapWs;
 
-	public SoapRequestTest() {
+	public TypedSoapRequestTest() {
 		this.soapWs = new SoapWebService(
 			"http://producao.envelope-soap-test.com",
-			"http://homologacao.envelope-soap-test.com");
+			"http://homologacao.envelope-soap-test.com",
+			"http://desenvolvimento.envelope-soap-test.com");
 	}
 
 	@Test
 	public void mustSendSoapRequestToBothEnvironments() {
 		SoapEnvelopTestJaxb2Marshaller marshaller = new SoapEnvelopTestJaxb2Marshaller();
-		TypedSoapRequest<String, Boolean> envelopeSoap = new TypedSoapRequest<>(soapWs, marshaller);
+		MarshallingSoapRequest<String, Boolean> envelopeSoap = new MarshallingSoapRequest<>(soapWs, marshaller);
 
 		MockWebServiceServer mockServer = MockWebServiceServer.createServer(envelopeSoap.getWsGateway());
 		mockServer.expect(anything());
@@ -59,7 +60,7 @@ public class SoapRequestTest extends UnitTest {
 	@Test
 	public void shouldThrowExceptionWhenReceivesFaultResponse() {
 		SoapEnvelopTestJaxb2Marshaller marshaller = new SoapEnvelopTestJaxb2Marshaller();
-		TypedSoapRequest<String, Boolean> envelopeSoap = new TypedSoapRequest<>(soapWs, marshaller);
+		MarshallingSoapRequest<String, Boolean> envelopeSoap = new MarshallingSoapRequest<>(soapWs, marshaller);
 
 		MockWebServiceServer mockServer = MockWebServiceServer.createServer(envelopeSoap.getWsGateway());
 		mockServer
@@ -79,7 +80,7 @@ public class SoapRequestTest extends UnitTest {
 	@Test
 	public void mustExtractMessageWithCustomResponseExtractor() {
 		SoapEnvelopTestJaxb2Marshaller marshaller = new SoapEnvelopTestJaxb2Marshaller();
-		TypedSoapRequest<String, Boolean> envelopeSoap = new TypedSoapRequest<>(soapWs, marshaller);
+		MarshallingSoapRequest<String, Boolean> envelopeSoap = new MarshallingSoapRequest<>(soapWs, marshaller);
 
 		MockWebServiceServer mockServer = MockWebServiceServer.createServer(envelopeSoap.getWsGateway());
 		mockServer.expect(anything());
@@ -97,7 +98,7 @@ public class SoapRequestTest extends UnitTest {
 	@Test
 	public void shouldHandleInternalErrorWithCustomResponseExtractor() {
 		SoapEnvelopTestJaxb2Marshaller marshaller = new SoapEnvelopTestJaxb2Marshaller();
-		TypedSoapRequest<String, Boolean> envelopeSoap = new TypedSoapRequest<>(soapWs, marshaller);
+		MarshallingSoapRequest<String, Boolean> envelopeSoap = new MarshallingSoapRequest<>(soapWs, marshaller);
 
 		MockWebServiceServer mockServer = MockWebServiceServer.createServer(envelopeSoap.getWsGateway());
 		mockServer

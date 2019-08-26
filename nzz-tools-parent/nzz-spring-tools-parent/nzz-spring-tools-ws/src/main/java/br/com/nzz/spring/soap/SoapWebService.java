@@ -3,31 +3,30 @@ package br.com.nzz.spring.soap;
 import org.apache.commons.lang3.StringUtils;
 
 import br.com.nzz.spring.Environment;
-import lombok.AllArgsConstructor;
+import br.com.nzz.spring.WebService;
 import lombok.Getter;
 
 /**
- * Defines a SOAP WebServices with two possible URLs, one for production,
- * one for development.
+ * Defines a SOAP WebServices with three possible URLs, one for production,
+ * one for staging and one for development.
  *
  * @author Luiz Felipe Nazari
  */
 @Getter
-@AllArgsConstructor
-public class SoapWebService {
+public class SoapWebService extends WebService {
 
 	private static final String WSDL_PARAM = "?WSDL";
 
-	private final String urlProduction;
-
-	private final String urlDevelopment;
-
-	public static SoapWebService from(String url) {
-		return new SoapWebService(url, url);
+	public SoapWebService(String urlProduction, String urlStaging, String urlDevelopment) {
+		super(normalizeUrl(urlProduction), normalizeUrl(urlStaging), normalizeUrl(urlDevelopment));
 	}
 
-	public String getUrl(Environment environment) {
-		return environment == Environment.PRODUCTION ? this.urlProduction : this.urlDevelopment;
+	private static String normalizeUrl(String url) {
+		return StringUtils.endsWithIgnoreCase(url, WSDL_PARAM) ? url.substring(0, WSDL_PARAM.length()) : url;
+	}
+
+	public static SoapWebService from(String url) {
+		return new SoapWebService(url, url, url);
 	}
 
 	public String getUrlWsdl(Environment environment) {
@@ -37,6 +36,5 @@ public class SoapWebService {
 		}
 		return soapUrl;
 	}
-
 
 }

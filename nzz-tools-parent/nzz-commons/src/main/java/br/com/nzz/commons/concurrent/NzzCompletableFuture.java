@@ -9,10 +9,10 @@ import java.util.function.*;
  */
 public class NzzCompletableFuture<R> implements Future<R>, CompletionStage<R> {
 
-	private final Supplier<R> completableSupplier;
+	private final UnsafeSupplier<R> completableSupplier;
 	private final CompletableFuture<R> delegate;
 
-	NzzCompletableFuture(Supplier<R> supplier) {
+	NzzCompletableFuture(UnsafeSupplier<R> supplier) {
 		this.completableSupplier = supplier;
 		this.delegate = new CompletableFuture<>();
 		executeAsynchronously();
@@ -66,7 +66,7 @@ public class NzzCompletableFuture<R> implements Future<R>, CompletionStage<R> {
 	}
 
 	@Override
-	public <U> CompletionStage<U> thenApplyAsync(Function<? super R, ? extends U> fn, Executor executor) {
+	public <U> CompletionStage<U> thenApplyAsync(Function<? super R, ? extends U> fn, java.util.concurrent.Executor executor) {
 		return this.delegate.thenApplyAsync(fn, executor);
 	}
 
@@ -81,7 +81,7 @@ public class NzzCompletableFuture<R> implements Future<R>, CompletionStage<R> {
 	}
 
 	@Override
-	public CompletionStage<Void> thenAcceptAsync(Consumer<? super R> action, Executor executor) {
+	public CompletionStage<Void> thenAcceptAsync(Consumer<? super R> action, java.util.concurrent.Executor executor) {
 		return this.delegate.thenAcceptAsync(action, executor);
 	}
 
@@ -96,7 +96,7 @@ public class NzzCompletableFuture<R> implements Future<R>, CompletionStage<R> {
 	}
 
 	@Override
-	public CompletionStage<Void> thenRunAsync(Runnable action, Executor executor) {
+	public CompletionStage<Void> thenRunAsync(Runnable action, java.util.concurrent.Executor executor) {
 		return this.delegate.thenRunAsync(action, executor);
 	}
 
@@ -111,7 +111,7 @@ public class NzzCompletableFuture<R> implements Future<R>, CompletionStage<R> {
 	}
 
 	@Override
-	public <U, V> CompletionStage<V> thenCombineAsync(CompletionStage<? extends U> other, BiFunction<? super R, ? super U, ? extends V> fn, Executor executor) {
+	public <U, V> CompletionStage<V> thenCombineAsync(CompletionStage<? extends U> other, BiFunction<? super R, ? super U, ? extends V> fn, java.util.concurrent.Executor executor) {
 		return this.delegate.thenCombineAsync(other, fn);
 	}
 
@@ -126,7 +126,7 @@ public class NzzCompletableFuture<R> implements Future<R>, CompletionStage<R> {
 	}
 
 	@Override
-	public <U> CompletionStage<Void> thenAcceptBothAsync(CompletionStage<? extends U> other, BiConsumer<? super R, ? super U> action, Executor executor) {
+	public <U> CompletionStage<Void> thenAcceptBothAsync(CompletionStage<? extends U> other, BiConsumer<? super R, ? super U> action, java.util.concurrent.Executor executor) {
 		return this.delegate.thenAcceptBothAsync(other, action, executor);
 	}
 
@@ -141,7 +141,7 @@ public class NzzCompletableFuture<R> implements Future<R>, CompletionStage<R> {
 	}
 
 	@Override
-	public CompletionStage<Void> runAfterBothAsync(CompletionStage<?> other, Runnable action, Executor executor) {
+	public CompletionStage<Void> runAfterBothAsync(CompletionStage<?> other, Runnable action, java.util.concurrent.Executor executor) {
 		return this.delegate.runAfterBothAsync(other, action, executor);
 	}
 
@@ -156,7 +156,7 @@ public class NzzCompletableFuture<R> implements Future<R>, CompletionStage<R> {
 	}
 
 	@Override
-	public <U> CompletionStage<U> applyToEitherAsync(CompletionStage<? extends R> other, Function<? super R, U> fn, Executor executor) {
+	public <U> CompletionStage<U> applyToEitherAsync(CompletionStage<? extends R> other, Function<? super R, U> fn, java.util.concurrent.Executor executor) {
 		return this.delegate.applyToEitherAsync(other, fn, executor);
 	}
 
@@ -171,7 +171,7 @@ public class NzzCompletableFuture<R> implements Future<R>, CompletionStage<R> {
 	}
 
 	@Override
-	public CompletionStage<Void> acceptEitherAsync(CompletionStage<? extends R> other, Consumer<? super R> action, Executor executor) {
+	public CompletionStage<Void> acceptEitherAsync(CompletionStage<? extends R> other, Consumer<? super R> action, java.util.concurrent.Executor executor) {
 		return this.delegate.acceptEitherAsync(other, action, executor);
 	}
 
@@ -186,7 +186,7 @@ public class NzzCompletableFuture<R> implements Future<R>, CompletionStage<R> {
 	}
 
 	@Override
-	public CompletionStage<Void> runAfterEitherAsync(CompletionStage<?> other, Runnable action, Executor executor) {
+	public CompletionStage<Void> runAfterEitherAsync(CompletionStage<?> other, Runnable action, java.util.concurrent.Executor executor) {
 		return this.delegate.runAfterEitherAsync(other, action, executor);
 	}
 
@@ -201,7 +201,7 @@ public class NzzCompletableFuture<R> implements Future<R>, CompletionStage<R> {
 	}
 
 	@Override
-	public <U> CompletionStage<U> thenComposeAsync(Function<? super R, ? extends CompletionStage<U>> fn, Executor executor) {
+	public <U> CompletionStage<U> thenComposeAsync(Function<? super R, ? extends CompletionStage<U>> fn, java.util.concurrent.Executor executor) {
 		return this.delegate.thenComposeAsync(fn, executor);
 	}
 
@@ -221,7 +221,7 @@ public class NzzCompletableFuture<R> implements Future<R>, CompletionStage<R> {
 	}
 
 	@Override
-	public CompletionStage<R> whenCompleteAsync(BiConsumer<? super R, ? super Throwable> action, Executor executor) {
+	public CompletionStage<R> whenCompleteAsync(BiConsumer<? super R, ? super Throwable> action, java.util.concurrent.Executor executor) {
 		return this.delegate.whenCompleteAsync(action, executor);
 	}
 
@@ -236,7 +236,7 @@ public class NzzCompletableFuture<R> implements Future<R>, CompletionStage<R> {
 	}
 
 	@Override
-	public <U> CompletionStage<U> handleAsync(BiFunction<? super R, Throwable, ? extends U> fn, Executor executor) {
+	public <U> CompletionStage<U> handleAsync(BiFunction<? super R, Throwable, ? extends U> fn, java.util.concurrent.Executor executor) {
 		return this.delegate.handleAsync(fn, executor);
 	}
 
