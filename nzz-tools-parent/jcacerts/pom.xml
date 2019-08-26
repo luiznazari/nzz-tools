@@ -6,12 +6,12 @@
     <parent>
         <groupId>br.com.nzz.tools</groupId>
         <artifactId>nzz-tools-parent</artifactId>
-        <version>1.2.1</version>
+        <version>1.2.2</version>
     </parent>
 
     <groupId>br.com.nzz.security</groupId>
     <artifactId>nzz-jcacerts</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
     <description>Java public root CA certificates importer</description>
     <packaging>jar</packaging>
 

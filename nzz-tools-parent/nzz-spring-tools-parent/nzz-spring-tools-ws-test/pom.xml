@@ -41,9 +41,9 @@
     <parent>
         <artifactId>nzz-spring-tools-parent</artifactId>
         <groupId>br.com.nzz.tools</groupId>
-        <version>1.2.1</version>
+        <version>1.2.2</version>
     </parent>
 
-    <version>1.2.1</version>
+    <version>1.2.2</version>
 
 </project>
