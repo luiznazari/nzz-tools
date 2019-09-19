@@ -7,7 +7,7 @@ package br.com.nzz.spring.exception;
  */
 public class WebServiceInternalException extends Exception {
 
-	private static final long serialVersionUID = 4735186022368404957L;
+	private static final long serialVersionUID = 7336974463109433131L;
 
 	public WebServiceInternalException(String message, Throwable throwable) {
 		super(message, throwable);

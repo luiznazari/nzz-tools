@@ -9,18 +9,22 @@ import lombok.Getter;
  */
 public class WebServiceException extends RuntimeException {
 
-	private static final long serialVersionUID = -806298005650580948L;
+	private static final long serialVersionUID = -5601844939372278210L;
 
 	@Getter
-	private final ApiErrorMessage error;
+	private ApiErrorMessage error;
 
-	public WebServiceException(String errorMessageKey, Object... params) {
-		this(null, errorMessageKey, params);
+	public WebServiceException(String errorMessageKey) {
+		this(errorMessageKey, null);
 	}
 
-	public WebServiceException(Throwable throwable, String errorMessageKey, Object... params) {
+	public WebServiceException(String errorMessageKey, Throwable throwable) {
 		super(errorMessageKey, throwable);
-		this.error = new ApiErrorMessage(errorMessageKey).params(params);
+	}
+
+	public WebServiceException parameters(Object... params) {
+		this.error = new ApiErrorMessage(this.getMessage()).params(params);
+		return this;
 	}
 
 }

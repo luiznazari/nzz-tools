@@ -13,9 +13,9 @@ public class AdapterLoader extends NzzLoader {
 	public static XmlAdapter<?, ?>[] loadFromClassPath() {
 		List<XmlAdapter<?, ?>> adapters = new ArrayList<>();
 		if (AdapterLoader.isNzzCommonsEnabled()) {
-			adapters.add(instantiateClass("LocalDateBrXmlAdapter"));
-			adapters.add(instantiateClass("LocalDateTimeBrXmlAdapter"));
-			adapters.add(instantiateClass("ValorDecimalXmlAdapter"));
+			adapters.add(instantiateClass("br.com.nzz.spring.adapter.LocalDateBrXmlAdapter"));
+			adapters.add(instantiateClass("br.com.nzz.spring.adapter.LocalDateTimeBrXmlAdapter"));
+			adapters.add(instantiateClass("br.com.nzz.spring.adapter.ValorDecimalXmlAdapter"));
 		}
 		return adapters.toArray(new XmlAdapter<?, ?>[0]);
 	}

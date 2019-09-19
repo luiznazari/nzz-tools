@@ -8,7 +8,7 @@ import java.io.IOException;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import br.com.nzz.spring.utils.XmlGregorianCalendarUtils;
+import br.com.nzz.spring.ws.utils.XmlGregorianCalendarUtils;
 
 /**
  * @author Luiz.Nazari

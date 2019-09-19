@@ -5,10 +5,10 @@ package br.com.nzz.spring.exception;
  */
 public class WebServiceEntityNotFoundException extends WebServiceException {
 
-	private static final long serialVersionUID = -4464101587046840879L;
+	private static final long serialVersionUID = 7769179831860137912L;
 
-	public WebServiceEntityNotFoundException(String errorMessageKey, Object... params) {
-		super(errorMessageKey, params);
+	public WebServiceEntityNotFoundException(String errorMessageKey) {
+		super(errorMessageKey);
 	}
 
 }
