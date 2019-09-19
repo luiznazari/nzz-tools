@@ -15,6 +15,7 @@
     <packaging>jar</packaging>
 
     <properties>
+        <hibernate.version>5.3.10.Final</hibernate.version>
         <javax.persistence.version>2.2</javax.persistence.version>
     </properties>
 
@@ -29,6 +30,13 @@
             <groupId>javax.persistence</groupId>
             <artifactId>javax.persistence-api</artifactId>
             <version>${javax.persistence.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

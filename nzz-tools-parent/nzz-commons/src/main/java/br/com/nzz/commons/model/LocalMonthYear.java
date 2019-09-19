@@ -17,49 +17,66 @@ import java.time.temporal.TemporalQuery;
 import java.time.temporal.TemporalUnit;
 import java.time.temporal.ValueRange;
 
-import br.com.nzz.commons.model.converter.LocalDateBrConverter;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
- * Persistence Wrapper Class for {@link LocalDate} with PT-BR date format (dd/MM/yyyy).
+ * Persistence Wrapper Class for {@link LocalDate} only with month and year, always with the
+ * first day of the month.
  *
  * @author Luiz.Nazari
  */
-@Getter
-@Setter
 @EqualsAndHashCode(callSuper = false, of = "value")
-public final class LocalDateBr implements Temporal, TemporalAdjuster, ChronoLocalDate, Serializable {
+public final class LocalMonthYear implements Temporal, TemporalAdjuster, ChronoLocalDate, Serializable {
 
-	private static final long serialVersionUID = 7241590140588438117L;
+	private static final DateTimeFormatter FORMATTER_MONTH_YEAR_BR = DateTimeFormatter.ofPattern("MM/yyyy");
 
+	private static final long serialVersionUID = 3059121371803480233L;
+
+	@Getter
 	private final LocalDate value;
 
-	public LocalDateBr(String dateBrFormat) {
-		this(new LocalDateBrConverter().convertToEntityAttribute(dateBrFormat).getValue());
+	public LocalMonthYear(CharSequence text) {
+		this(LocalDate.parse(text));
 	}
 
-	private LocalDateBr(LocalDate localDate) {
-		this.value = localDate;
+	private LocalMonthYear(LocalDate localDate) {
+		this.value = localDate.withDayOfMonth(1);
 	}
 
-	public static LocalDateBr now() {
-		return LocalDateBr.from(LocalDate.now());
+	public static LocalMonthYear now() {
+		return LocalMonthYear.from(LocalDate.now());
 	}
 
-	public static LocalDateBr from(LocalDate localDate) {
-		return new LocalDateBr(localDate);
+	public static LocalMonthYear from(LocalDate localDate) {
+		return new LocalMonthYear(localDate);
 	}
 
-	public static LocalDateBr parse(String text) {
-		return new LocalDateBr(text);
+
+	public static LocalMonthYear of(int year, int month) {
+		return from(LocalDate.of(year, month, 1));
 	}
 
-	// TODO BrLocalDateTime
+	public static LocalMonthYear parse(CharSequence text) {
+		return new LocalMonthYear(text);
+	}
+
+	public static LocalMonthYear parse(CharSequence text, DateTimeFormatter dateTimeFormatter) {
+		return from(LocalDate.parse(text, dateTimeFormatter));
+	}
+
+	/**
+	 * Format this month and year with pattern "MM/yyyy".
+	 *
+	 * @return the formatted period.
+	 */
+	public String formatBr() {
+		return FORMATTER_MONTH_YEAR_BR.format(this.value);
+	}
+
 	@Override
-	public LocalDateTime atTime(LocalTime localTime) {
-		return this.value.atTime(localTime);
+	public String toString() {
+		return this.formatBr();
 	}
 
 	// =-=-=-=-=: Delegate to value :=-=-=-=-=
@@ -110,33 +127,33 @@ public final class LocalDateBr implements Temporal, TemporalAdjuster, ChronoLoca
 	}
 
 	@Override
-	public LocalDateBr with(TemporalAdjuster adjuster) {
-		return LocalDateBr.from(this.value.with(adjuster));
+	public LocalMonthYear with(TemporalAdjuster adjuster) {
+		return LocalMonthYear.from(this.value.with(adjuster));
 	}
 
 	@Override
-	public LocalDateBr with(TemporalField field, long newValue) {
-		return LocalDateBr.from(this.value.with(field, newValue));
+	public LocalMonthYear with(TemporalField field, long newValue) {
+		return LocalMonthYear.from(this.value.with(field, newValue));
 	}
 
 	@Override
-	public LocalDateBr plus(TemporalAmount amount) {
-		return LocalDateBr.from(this.value.plus(amount));
+	public LocalMonthYear plus(TemporalAmount amount) {
+		return LocalMonthYear.from(this.value.plus(amount));
 	}
 
 	@Override
-	public LocalDateBr plus(long amountToAdd, TemporalUnit unit) {
-		return LocalDateBr.from(this.value.plus(amountToAdd, unit));
+	public LocalMonthYear plus(long amountToAdd, TemporalUnit unit) {
+		return LocalMonthYear.from(this.value.plus(amountToAdd, unit));
 	}
 
 	@Override
-	public LocalDateBr minus(TemporalAmount amount) {
-		return LocalDateBr.from(this.value.minus(amount));
+	public LocalMonthYear minus(TemporalAmount amount) {
+		return LocalMonthYear.from(this.value.minus(amount));
 	}
 
 	@Override
-	public LocalDateBr minus(long amountToSubtract, TemporalUnit unit) {
-		return LocalDateBr.from(this.value.minus(amountToSubtract, unit));
+	public LocalMonthYear minus(long amountToSubtract, TemporalUnit unit) {
+		return LocalMonthYear.from(this.value.minus(amountToSubtract, unit));
 	}
 
 	@Override
@@ -192,6 +209,11 @@ public final class LocalDateBr implements Temporal, TemporalAdjuster, ChronoLoca
 	@Override
 	public long getLong(TemporalField field) {
 		return this.value.getLong(field);
+	}
+
+	@Override
+	public LocalDateTime atTime(LocalTime localTime) {
+		return this.value.atTime(localTime);
 	}
 
 }
