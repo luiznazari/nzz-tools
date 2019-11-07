@@ -11,7 +11,7 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import br.com.nzz.spring.exception.WebServiceInternalException;
-import br.com.nzz.spring.ws.soap.SoapClient;
+import br.com.nzz.spring.ws.soap.TypedSoapRequest;
 import br.com.nzz.test.UnitTest;
 import br.com.nzz.validation.message.ErrorMessage;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +29,7 @@ public class XmlTestUtils {
 	}
 
 	public static String objToXml(Object obj) {
-		return objToXml(SoapClient.createMarshaller(obj.getClass()), obj);
+		return objToXml(TypedSoapRequest.createMarshaller(obj.getClass()), obj);
 	}
 
 	public static String objToXml(Jaxb2Marshaller marshaller, Object obj) {
@@ -42,25 +42,25 @@ public class XmlTestUtils {
 	}
 
 	public static <T> T xmlToObj(String xml, Class<T> classe) {
-		return xmlToObj(SoapClient.createMarshaller(classe), xml, classe);
+		return xmlToObj(TypedSoapRequest.createMarshaller(classe), xml, classe);
 	}
 
-	public static <T> T xmlToObj(Jaxb2Marshaller unmarshaller, String xml, Class<T> classe) {
+	public static <T> T xmlToObj(Jaxb2Marshaller unMarshaller, String xml, Class<T> classe) {
 		try {
-			return new XmlConverter(unmarshaller).toObject(xml, classe).getValue();
+			return new XmlConverter(unMarshaller).toObject(xml, classe).getValue();
 		} catch (WebServiceInternalException e) {
 			UnitTest.fail(e);
 			return null;
 		}
 	}
 
-	public static <T> T xmlToObj(InputStream xmlInputStream, Class<T> classe) {
-		return xmlToObj(SoapClient.createMarshaller(classe), xmlInputStream, classe);
+	public static <T> T xmlToObj(InputStream xmlInputStream, Class<T> objectClass) {
+		return xmlToObj(TypedSoapRequest.createMarshaller(objectClass), xmlInputStream, objectClass);
 	}
 
-	public static <T> T xmlToObj(Jaxb2Marshaller unmarshaller, InputStream xmlInputStream, Class<T> classe) {
+	public static <T> T xmlToObj(Jaxb2Marshaller unMarshaller, InputStream xmlInputStream, Class<T> objectClass) {
 		try {
-			return new XmlConverter(unmarshaller).toObject(xmlInputStream, classe).getValue();
+			return new XmlConverter(unMarshaller).toObject(xmlInputStream, objectClass).getValue();
 		} catch (WebServiceInternalException e) {
 			UnitTest.fail(e);
 			return null;

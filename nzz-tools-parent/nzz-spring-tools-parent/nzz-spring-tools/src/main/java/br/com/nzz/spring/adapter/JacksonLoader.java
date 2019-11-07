@@ -16,7 +16,7 @@ public class JacksonLoader extends NzzLoader {
 			serializers.add(instantiateClass("br.com.nzz.spring.adapter.ValorDecimalJsonSerializer"));
 		}
 		if (isNzzSpringWsEnabled()) {
-			serializers.add(instantiateClass("br.com.nzz.spring.ws.adapter.XMLGregorianCalendarJsonSerializer"));
+			serializers.add(instantiateClass("br.com.nzz.spring.adapter.XMLGregorianCalendarJsonSerializer"));
 		}
 		return serializers;
 	}

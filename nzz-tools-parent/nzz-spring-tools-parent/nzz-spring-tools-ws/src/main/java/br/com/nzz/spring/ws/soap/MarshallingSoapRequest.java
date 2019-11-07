@@ -4,16 +4,19 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.client.core.SourceExtractor;
 import org.springframework.ws.client.core.WebServiceMessageCallback;
 import org.springframework.ws.client.core.WebServiceMessageExtractor;
+import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 import org.springframework.ws.support.MarshallingUtils;
 import org.springframework.ws.transport.WebServiceMessageSender;
 import org.springframework.xml.transform.StringSource;
 
 import java.util.function.Consumer;
 
+import javax.annotation.Nonnull;
+
 import br.com.nzz.commons.concurrent.NzzCompletableFuture;
 import br.com.nzz.commons.concurrent.NzzFutures;
-import br.com.nzz.spring.ws.Environment;
 import br.com.nzz.spring.exception.WebServiceException;
+import br.com.nzz.spring.ws.Environment;
 import br.com.nzz.spring.ws.WebServiceMessageSenderBuilder;
 import lombok.extern.log4j.Log4j2;
 
@@ -74,6 +77,12 @@ public class MarshallingSoapRequest<P, R> extends WebServiceTemplateAbstractSoap
 	}
 
 	@Override
+	public MarshallingSoapRequest<P, R> doWithWebServiceGateway(Consumer<WebServiceGatewaySupport> wsGatewayConsumer) {
+		super.doWithWebServiceGateway(wsGatewayConsumer);
+		return this;
+	}
+
+	@Override
 	public R sendSync(P payload) {
 		return this.send(() -> {
 			String wsdlUrl = this.webService.getUrlWsdl(this.environment);
@@ -88,12 +97,12 @@ public class MarshallingSoapRequest<P, R> extends WebServiceTemplateAbstractSoap
 	}
 
 	@Override
-	public NzzCompletableFuture<R> sendXml(String payload) {
+	public NzzCompletableFuture<R> sendXml(@Nonnull String payload) {
 		return NzzFutures.resolve(() -> this.sendXmlSync(payload));
 	}
 
 	@Override
-	public R sendXmlSync(String payload) throws WebServiceException {
+	public R sendXmlSync(@Nonnull String payload) {
 		return this.send(() -> {
 			String wsdlUrl = this.webService.getUrlWsdl(this.environment);
 

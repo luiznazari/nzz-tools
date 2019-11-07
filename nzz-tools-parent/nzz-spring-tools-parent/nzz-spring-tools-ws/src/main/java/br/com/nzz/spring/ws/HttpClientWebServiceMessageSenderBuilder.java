@@ -14,6 +14,7 @@ import java.security.cert.CertificateException;
 import java.time.Duration;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManagerFactory;
@@ -51,10 +52,10 @@ public class HttpClientWebServiceMessageSenderBuilder implements WebServiceMessa
 	private SSLProtocolVersion sslProtocolVersion;
 
 	public HttpClientWebServiceMessageSenderBuilder() {
-		this(Function.identity());
+		this(UnaryOperator.identity());
 	}
 
-	public HttpClientWebServiceMessageSenderBuilder(Function<String, String> passwordDecoder) {
+	public HttpClientWebServiceMessageSenderBuilder(UnaryOperator<String> passwordDecoder) {
 		this.passwordDecoder = passwordDecoder;
 	}
 
@@ -71,7 +72,7 @@ public class HttpClientWebServiceMessageSenderBuilder implements WebServiceMessa
 	}
 
 	@Override
-	public WebServiceMessageSenderBuilder withPasswordDecoder(Function<String, String> passwordDecoderFunction) {
+	public WebServiceMessageSenderBuilder withPasswordDecoder(UnaryOperator<String> passwordDecoderFunction) {
 		this.passwordDecoder = passwordDecoderFunction;
 		return this;
 	}

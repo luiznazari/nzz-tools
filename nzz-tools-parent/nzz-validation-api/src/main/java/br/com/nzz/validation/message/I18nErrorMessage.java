@@ -24,7 +24,7 @@ public class I18nErrorMessage implements ErrorMessage {
 		this.messageKey = messageKey;
 	}
 
-	public I18nErrorMessage params(Object... messageParameters) {
+	public I18nErrorMessage parameters(Object... messageParameters) {
 		this.messageParameters = messageParameters;
 		this.message = null;
 		return this;

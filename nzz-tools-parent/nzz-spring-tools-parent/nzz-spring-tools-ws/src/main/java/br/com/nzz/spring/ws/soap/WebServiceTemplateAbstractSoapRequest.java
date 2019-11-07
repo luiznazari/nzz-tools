@@ -3,12 +3,15 @@ package br.com.nzz.spring.ws.soap;
 import org.springframework.http.HttpStatus;
 import org.springframework.ws.client.WebServiceIOException;
 import org.springframework.ws.client.core.WebServiceMessageCallback;
+import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 import org.springframework.ws.soap.client.core.SoapActionCallback;
 import org.springframework.ws.transport.WebServiceMessageSender;
 
 import java.net.SocketTimeoutException;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+
+import javax.annotation.Nonnull;
 
 import br.com.nzz.commons.concurrent.NzzCompletableFuture;
 import br.com.nzz.commons.concurrent.NzzFutures;
@@ -37,7 +40,6 @@ public abstract class WebServiceTemplateAbstractSoapRequest<P, R> implements Gen
 	private String soapAction;
 	Environment environment = Environment.DEVELOPMENT;
 	final SoapWebService webService;
-	@Getter
 	final SoapRequestGatewaySupport wsGateway;
 
 	WebServiceTemplateAbstractSoapRequest(String url) {
@@ -75,13 +77,26 @@ public abstract class WebServiceTemplateAbstractSoapRequest<P, R> implements Gen
 	}
 
 	@Override
-	public NzzCompletableFuture<R> send(P payload) {
+	public NzzCompletableFuture<R> send(@Nonnull P payload) {
 		return NzzFutures.resolve(() -> this.sendSync(payload));
 	}
 
 	@Override
 	public SoapWebService getWebService() {
 		return this.webService;
+	}
+
+	@Override
+	public WebServiceGatewaySupport getWebServiceGateway() {
+		return this.wsGateway;
+	}
+
+	@Override
+	public WebServiceTemplateAbstractSoapRequest<P, R> doWithWebServiceGateway(Consumer<WebServiceGatewaySupport> wsGatewayConsumer) {
+		if (wsGatewayConsumer != null) {
+			wsGatewayConsumer.accept(this.wsGateway);
+		}
+		return this;
 	}
 
 	protected R send(Supplier<R> soapSenderSupplier) {

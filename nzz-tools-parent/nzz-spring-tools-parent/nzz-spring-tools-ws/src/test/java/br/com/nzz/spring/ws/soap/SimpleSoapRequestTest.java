@@ -35,7 +35,7 @@ public class SimpleSoapRequestTest extends UnitTest {
 			.withEnvironment(Environment.DEVELOPMENT);
 
 		MockWebServiceServer mockServer = MockWebServiceServer
-			.createServer(((SimpleSoapRequest) soapRequest).getWsGateway());
+			.createServer(((SimpleSoapRequest) soapRequest).getWebServiceGateway());
 		mockServer.expect(RequestMatchers.payload(new StringSource(payloadXml)));
 
 		soapRequest.sendSync(payloadXml);
@@ -54,7 +54,7 @@ public class SimpleSoapRequestTest extends UnitTest {
 				.withTrustStore(null)
 			);
 
-		boolean hasBuiltHttpsMessageSender = Stream.of(soapRequest.getWsGateway()
+		boolean hasBuiltHttpsMessageSender = Stream.of(soapRequest.getWebServiceGateway()
 			.getWebServiceTemplate()
 			.getMessageSenders())
 			.anyMatch(messageSender -> messageSender.getClass() == HttpsUrlConnectionMessageSender.class);
@@ -68,7 +68,7 @@ public class SimpleSoapRequestTest extends UnitTest {
 		SimpleSoapRequest soapRequest = new SimpleSoapRequest(soapWs)
 			.withMessageSender(webServiceMessageSender);
 
-		boolean hasBuiltHttpsMessageSender = Stream.of(soapRequest.getWsGateway()
+		boolean hasBuiltHttpsMessageSender = Stream.of(soapRequest.getWebServiceGateway()
 			.getWebServiceTemplate()
 			.getMessageSenders())
 			.anyMatch(messageSender -> messageSender == webServiceMessageSender);

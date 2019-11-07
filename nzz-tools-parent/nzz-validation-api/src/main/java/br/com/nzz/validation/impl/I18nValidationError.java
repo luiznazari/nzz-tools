@@ -17,12 +17,12 @@ public class I18nValidationError extends I18nErrorMessage implements ValidationE
 
 	public I18nValidationError(@NonNull String errorMessageKey, Object... params) {
 		super(errorMessageKey);
-		this.params(params);
+		this.parameters(params);
 	}
 
 	@Override
-	public I18nValidationError params(Object... messageParameters) {
-		super.params(messageParameters);
+	public I18nValidationError parameters(Object... messageParameters) {
+		super.parameters(messageParameters);
 		return this;
 	}
 

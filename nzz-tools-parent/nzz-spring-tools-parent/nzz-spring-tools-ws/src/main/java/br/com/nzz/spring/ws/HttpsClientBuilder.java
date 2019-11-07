@@ -1,5 +1,6 @@
 package br.com.nzz.spring.ws;
 
+import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
@@ -9,14 +10,13 @@ import org.apache.http.auth.Credentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.HttpClient;
-import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.ssl.SSLContexts;
-import org.apache.http.ssl.TrustStrategy;
 
 import java.io.IOException;
 import java.security.KeyManagementException;
@@ -26,7 +26,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
@@ -54,23 +56,37 @@ public class HttpsClientBuilder implements SecureHttpClientBuilder {
 	private static final String KEY_STORE = "KeyStore";
 	private static final String TRUST_STORE = "TrustStore";
 
-	private Function<String, String> passwordDecoder;
+	private UnaryOperator<String> passwordDecoder;
 	private HttpHost proxyHost;
+	private Integer readTimeoutInSeconds;
+	private Integer connectionTimeoutInSeconds;
 	private KeyStoreResource keyStore;
 	private KeyStoreResource trustStore;
 	private Credentials basicCredentials;
 	private SSLProtocolVersion sslProtocolVersion;
 
 	public HttpsClientBuilder() {
-		this(Function.identity());
+		this(UnaryOperator.identity());
 	}
 
-	public HttpsClientBuilder(Function<String, String> passwordDecoder) {
+	public HttpsClientBuilder(UnaryOperator<String> passwordDecoder) {
 		this.passwordDecoder = passwordDecoder;
 	}
 
 	@Override
-	public HttpsClientBuilder withPasswordDecoder(Function<String, String> passwordDecoderFunction) {
+	public HttpsClientBuilder withReadTimeoutInSeconds(Integer readTimeoutInSeconds) {
+		this.readTimeoutInSeconds = readTimeoutInSeconds;
+		return this;
+	}
+
+	@Override
+	public HttpsClientBuilder withConnectionTimeoutInSeconds(Integer connectionTimeoutInSeconds) {
+		this.connectionTimeoutInSeconds = connectionTimeoutInSeconds;
+		return this;
+	}
+
+	@Override
+	public HttpsClientBuilder withPasswordDecoder(UnaryOperator<String> passwordDecoderFunction) {
 		this.passwordDecoder = passwordDecoderFunction;
 		return this;
 	}
@@ -114,8 +130,12 @@ public class HttpsClientBuilder implements SecureHttpClientBuilder {
 
 	@Override
 	public HttpClient build() {
+		RequestConfig.Builder requestBuilder = RequestConfig.custom();
+		this.configureTimeouts(requestBuilder);
+
 		org.apache.http.impl.client.HttpClientBuilder httpClientBuilder = HttpClients.custom()
-			.addInterceptorFirst(contentLengthHeaderRemover());
+			.addInterceptorFirst(contentLengthHeaderRemover())
+			.setDefaultRequestConfig(requestBuilder.build());
 
 		if (hasHttpsConfiguration()) {
 			httpClientBuilder.setSSLContext(this.buildSSLContext());
@@ -128,6 +148,17 @@ public class HttpsClientBuilder implements SecureHttpClientBuilder {
 		this.configureHttpAuth(httpClientBuilder);
 
 		return httpClientBuilder.build();
+	}
+
+	private void configureTimeouts(RequestConfig.Builder requestBuilder) {
+		if (this.readTimeoutInSeconds != null)
+			requestBuilder.setConnectTimeout(getTimeoutMilliseconds(this.readTimeoutInSeconds));
+		if (this.connectionTimeoutInSeconds != null)
+			requestBuilder.setConnectionRequestTimeout(getTimeoutMilliseconds(this.connectionTimeoutInSeconds));
+	}
+
+	private int getTimeoutMilliseconds(Integer readTimeoutInSeconds) {
+		return (int) TimeUnit.SECONDS.toMillis((long) readTimeoutInSeconds);
 	}
 
 	private boolean hasHttpsConfiguration() {
