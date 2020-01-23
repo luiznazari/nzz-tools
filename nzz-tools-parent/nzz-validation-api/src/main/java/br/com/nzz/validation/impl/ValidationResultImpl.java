@@ -4,6 +4,8 @@ package br.com.nzz.validation.impl;
 import br.com.nzz.validation.exception.CustomValidationException;
 import br.com.nzz.validation.ValidationError;
 import br.com.nzz.validation.ValidationResult;
+import lombok.SneakyThrows;
+
 import com.google.common.collect.Sets;
 
 import javax.validation.ConstraintViolation;
@@ -11,6 +13,7 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -46,6 +49,24 @@ public class ValidationResultImpl implements ValidationResult {
 		this.onError(errors -> {
 			throw new CustomValidationException(errors);
 		});
+		return this;
+	}
+
+	@SneakyThrows
+	@Override
+	public ValidationResult onErrorThrow(Supplier<Throwable> throwableSupplier) {
+		if (this.hasErrors()) {
+			throw throwableSupplier.get();
+		}
+		return this;
+	}
+
+	@SneakyThrows
+	@Override
+	public ValidationResult onErrorThrow(Function<Set<? extends ValidationError>, Throwable> throwableFunction) {
+		if (this.hasErrors()) {
+			throw throwableFunction.apply(this.getErrors());
+		}
 		return this;
 	}
 

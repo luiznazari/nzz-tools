@@ -1,44 +1,26 @@
-package br.com.nzz.validation.impl;
+package br.com.nzz.validation;
 
-import br.com.nzz.validation.*;
-import br.com.nzz.validation.impl.rules.NotNullValidationRule;
-import org.jspare.core.Environment;
-import org.jspare.unit.ext.junit.JspareUnitRunner;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import javax.inject.Inject;
-import javax.validation.Validator;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static org.jspare.core.internal.Bind.bind;
+import br.com.nzz.validation.impl.rules.NotNullValidationRule;
+import lombok.RequiredArgsConstructor;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
-@RunWith(JspareUnitRunner.class)
-public class CustomValidatorImplIntegrationTest {
-
-	@Inject
-	private CustomValidator validator;
+@RequiredArgsConstructor
+public abstract class AbstractCustomValidatorImplTest {
 
 	private final String STRING_NOT_EMPTY_ERROR_CODE = "test.error.not.empty";
 	private final Supplier<ValidationError> notEmptyValidationConstraint = ValidationConstraints.notEmpty("", STRING_NOT_EMPTY_ERROR_CODE);
 
-	@BeforeClass
-	public static void setUpJspare() {
-		Environment.registry(bind(Validator.class).to(BeanValidator.class));
-		Environment.registry(bind(CustomValidator.class).to(CustomValidatorImpl.class));
-	}
-
-	@Before
-	public void setUp() {
-		assertNotNull("Should successfully inject the validator with Jspare container.", validator);
-	}
+	protected abstract CustomValidator getValidator();
 
 	@Test
 	public void shouldValidateWithCustomValidationClass() {
@@ -60,7 +42,7 @@ public class CustomValidatorImplIntegrationTest {
 	}
 
 	private ObjectValidator<BeautifulObject> buildValidator() {
-		return validator.builder(BeautifulObject.class)
+		return getValidator().builder(BeautifulObject.class)
 			.with(new NotNullValidationRule()).blocking()
 			.withBeanValidation().blocking()
 			.with(TestValidationRule.class)

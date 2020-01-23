@@ -1,8 +1,8 @@
 package br.com.nzz.validation;
 
-import br.com.nzz.validation.exception.CustomValidationException;
-
 import java.util.function.Supplier;
+
+import br.com.nzz.validation.exception.CustomValidationException;
 
 /**
  * The custom validator allows fluent br.com.nzz.validation, chaining br.com.nzz.validation rules, managing
@@ -19,6 +19,20 @@ public interface CustomValidator {
 	 * @return the br.com.nzz.validation result
 	 */
 	ValidationResult validate(Object object);
+
+	/**
+	 * Validates an object with the given validation class. The br.com.nzz.validation rule should
+	 * be provided by a known Dependency Injection container.<br>
+	 * This method is a simple form of:
+	 * <pre>{@code
+	 * 	validator.builder(object).with(validationRuleClass).validate();
+	 * }</pre>
+	 *
+	 * @param object              the object to be validated
+	 * @param validationRuleClass the validation rule class
+	 * @return the br.com.nzz.validation result
+	 */
+	<T> ValidationResult validate(T object, Class<? extends ValidationRule<? super T>> validationRuleClass);
 
 	/**
 	 * Validates an error supplier. If it returns an error or throws a {@link CustomValidationException},

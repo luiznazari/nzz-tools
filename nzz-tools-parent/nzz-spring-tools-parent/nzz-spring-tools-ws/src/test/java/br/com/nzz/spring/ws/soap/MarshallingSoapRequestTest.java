@@ -114,8 +114,8 @@ public class MarshallingSoapRequestTest extends UnitTest {
 			fail("Should have thrown an exception.");
 
 		} catch (WebServiceException e) {
-			assertEquals(NzzConstants.INTEGRATION_ERROR, e.getError().getMessageKey());
-			assertEquals(NzzConstants.INTERNAL_ERROR, e.getError().getMessageParameters()[0]);
+			assertEquals(NzzConstants.INTEGRATION_ERROR, e.toErrorMessage().getMessageKey());
+			assertEquals(NzzConstants.INTERNAL_ERROR, e.toErrorMessage().getMessageParameters()[0]);
 
 		} finally {
 			mockServer.verify();
@@ -140,7 +140,7 @@ public class MarshallingSoapRequestTest extends UnitTest {
 		TypedSoapRequest<SoapTestRequestType, SoapTestResponseType> typeTypedSoapRequest = TypedSoapRequest.from(soapWs, marshaller);
 
 		MockWebServiceServer mockServer = MockWebServiceServer
-			.createServer(((MarshallingSoapRequest) typeTypedSoapRequest).getWebServiceGateway());
+			.createServer(typeTypedSoapRequest.getWebServiceGateway());
 		mockServer
 			.expect(RequestMatchers.payload(requestPayloadSource))
 			.andRespond(ResponseCreators.withPayload(responsePayloadSource));

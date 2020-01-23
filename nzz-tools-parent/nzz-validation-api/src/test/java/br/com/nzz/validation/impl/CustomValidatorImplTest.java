@@ -1,15 +1,24 @@
 package br.com.nzz.validation.impl;
 
-import br.com.nzz.validation.*;
-import br.com.nzz.validation.exception.CustomValidationException;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
-import static org.junit.Assert.*;
+import br.com.nzz.validation.BeautifulObject;
+import br.com.nzz.validation.CustomValidator;
+import br.com.nzz.validation.SimpleTestError;
+import br.com.nzz.validation.ValidationError;
+import br.com.nzz.validation.ValidationResult;
+import br.com.nzz.validation.exception.CustomValidationException;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class CustomValidatorImplTest {
 
@@ -90,6 +99,26 @@ public class CustomValidatorImplTest {
 		assertTrue(validationErrors.stream().anyMatch(msgCode(SimpleTestError.DEFAULT_ERROR_MSG_CODE)));
 	}
 
+	@Test(expected = CustomValidatorImplTestException.class)
+	public void shouldThrowCustomExceptionOnError() {
+		BeautifulObject object = validObject();
+		object.setName("");
+
+		ValidationResult validate = validator.validate(object);
+
+		validate.onErrorThrow((Supplier<Throwable>) CustomValidatorImplTestException::new);
+	}
+
+	@Test(expected = CustomValidatorImplTestException.class)
+	public void shouldThrowCustomExceptionWithParametersOnError() {
+		BeautifulObject object = validObject();
+		object.setName("");
+
+		ValidationResult validate = validator.validate(object);
+
+		validate.onErrorThrow((Function<Set<? extends ValidationError>, Throwable>) CustomValidatorImplTestException::new);
+	}
+
 	private BeautifulObject validObject() {
 		BeautifulObject object = new BeautifulObject();
 		object.setName(RandomStringUtils.randomAlphabetic(10));
@@ -100,6 +129,24 @@ public class CustomValidatorImplTest {
 
 	private Predicate<? super ValidationError> msgCode(String errorMessageCode) {
 		return error -> error.getMessageKey().equals(errorMessageCode);
+	}
+
+	private static class CustomValidatorImplTestException extends Exception {
+
+		private static final long serialVersionUID = 2236086020409422899L;
+
+		CustomValidatorImplTestException() {
+		}
+
+		CustomValidatorImplTestException(Set<? extends ValidationError> errors) {
+			super(
+				errors.stream()
+					.map(ValidationError::getMessage)
+					.reduce((e1, e2) -> e1 + ", " + e2)
+					.orElse(null)
+			);
+		}
+
 	}
 
 }

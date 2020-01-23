@@ -8,6 +8,7 @@ import javax.validation.ConstraintViolation;
 import java.util.Collections;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -34,6 +35,24 @@ public interface ValidationResult {
 	 * @throws CustomValidationException if the result contains br.com.nzz.validation errors
 	 */
 	ValidationResult onErrorThrowException();
+
+	/**
+	 * Defines an error callback, if the br.com.nzz.validation result has br.com.nzz.validation errors, an exception
+	 * containing all br.com.nzz.validation errors will be thrown. The errors can be serialized.
+	 *
+	 * @return this
+	 * @param throwableSupplier the function supplier
+	 */
+	ValidationResult onErrorThrow(Supplier<Throwable> throwableSupplier);
+
+	/**
+	 * Defines an error callback, if the br.com.nzz.validation result has br.com.nzz.validation errors, an exception
+	 * containing all br.com.nzz.validation errors will be thrown. The errors can be serialized.
+	 *
+	 * @return this
+	 * @param throwableFunction the function supplier
+	 */
+	ValidationResult onErrorThrow(Function<Set<? extends ValidationError>, Throwable> throwableFunction);
 
 	/**
 	 * Defines an callback to be called if the br.com.nzz.validation result does not contains br.com.nzz.validation errors.

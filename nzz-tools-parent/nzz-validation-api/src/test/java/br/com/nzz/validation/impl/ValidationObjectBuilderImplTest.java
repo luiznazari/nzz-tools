@@ -1,11 +1,12 @@
 package br.com.nzz.validation.impl;
 
+import org.junit.Before;
+import org.junit.Test;
+
 import br.com.nzz.validation.BeautifulObject;
 import br.com.nzz.validation.TestValidationRule;
 import br.com.nzz.validation.ValidationObjectBuilder;
 import br.com.nzz.validation.ValidationResult;
-import org.junit.Before;
-import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -18,6 +19,7 @@ public class ValidationObjectBuilderImplTest extends ValidationBuilderImplTest {
 	}
 
 	@Before
+	@Override
 	public void setUp() {
 		BeautifulObject object = new BeautifulObject();
 		super.validationBuilder = new ValidationObjectBuilderImpl<>(object);

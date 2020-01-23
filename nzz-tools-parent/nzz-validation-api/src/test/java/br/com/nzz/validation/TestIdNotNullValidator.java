@@ -7,7 +7,7 @@ import java.util.Set;
 
 public class TestIdNotNullValidator implements ValidationRule<BeautifulId> {
 
-	public static final String ERROR = "test.error.entity.id.null";
+	private static final String ERROR = "test.error.entity.id.null";
 
 	@Override
 	public Set<ValidationError> validate(BeautifulId beautifulId) {

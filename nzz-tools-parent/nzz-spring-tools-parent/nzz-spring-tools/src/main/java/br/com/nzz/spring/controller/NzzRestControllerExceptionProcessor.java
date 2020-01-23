@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import br.com.nzz.spring.NzzConstants;
 import br.com.nzz.spring.exception.ApiErrorMessage;
 import br.com.nzz.spring.exception.WebServiceEntityNotFoundException;
-import br.com.nzz.spring.NzzConstants;
 import br.com.nzz.spring.exception.WebServiceException;
 import br.com.nzz.validation.exception.CustomValidationException;
 import br.com.nzz.validation.message.ErrorMessage;
@@ -46,8 +46,8 @@ public class NzzRestControllerExceptionProcessor {
 	@ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
 	@ResponseBody
 	public List<ErrorMessage> exceptionRule(WebServiceException exception) {
-		log.trace(() -> exception.getError().getMessage(), exception);
-		return exception.getError()
+		log.trace(() -> exception.toErrorMessage().getMessage(), exception);
+		return exception.toErrorMessage()
 			.asErrorList();
 	}
 
@@ -61,7 +61,7 @@ public class NzzRestControllerExceptionProcessor {
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	@ResponseBody
 	public List<ErrorMessage> exceptionRule(WebServiceEntityNotFoundException exception) {
-		return exception.getError()
+		return exception.toErrorMessage()
 			.asErrorList();
 	}
 

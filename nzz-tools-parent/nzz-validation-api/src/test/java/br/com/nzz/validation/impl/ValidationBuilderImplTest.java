@@ -26,7 +26,8 @@ public class ValidationBuilderImplTest extends UnitTest {
 
 	@Test
 	public void shouldBuildEmptyValidatorSuccessfully() {
-		validationBuilder.build();
+		ObjectValidator<BeautifulObject> objectValidator = validationBuilder.build();
+		assertNotNull(objectValidator);
 	}
 
 	@Test
