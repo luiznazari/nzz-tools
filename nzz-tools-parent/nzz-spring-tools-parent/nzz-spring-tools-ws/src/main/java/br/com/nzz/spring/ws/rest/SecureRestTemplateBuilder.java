@@ -2,7 +2,7 @@ package br.com.nzz.spring.ws.rest;
 
 import org.springframework.web.client.RestTemplate;
 
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 import br.com.nzz.spring.model.KeyStoreResource;
 import br.com.nzz.spring.model.ProxyScheme;
@@ -37,7 +37,7 @@ public interface SecureRestTemplateBuilder {
 	 */
 	SecureRestTemplateBuilder withConnectionTimeoutInSeconds(Integer connectionTimeoutInSeconds);
 
-	SecureRestTemplateBuilder withPasswordDecoder(Function<String, String> passwordDecoderFunction);
+	SecureRestTemplateBuilder withPasswordDecoder(UnaryOperator<String> passwordDecoderFunction);
 
 	SecureRestTemplateBuilder withProxy(String hostname, int port);
 
@@ -57,7 +57,7 @@ public interface SecureRestTemplateBuilder {
 		return new SecureRestTemplateBuilderImpl();
 	}
 
-	static SecureRestTemplateBuilder custom(Function<String, String> passwordDecoderFunction) {
+	static SecureRestTemplateBuilder custom(UnaryOperator<String> passwordDecoderFunction) {
 		return new SecureRestTemplateBuilderImpl(passwordDecoderFunction);
 	}
 

@@ -1,13 +1,16 @@
 package br.com.nzz.spring.ws.soap;
 
+import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 import org.springframework.ws.transport.WebServiceMessageSender;
 
 import java.util.function.Consumer;
 
+import javax.annotation.Nonnull;
+
 import br.com.nzz.commons.concurrent.NzzCompletableFuture;
-import br.com.nzz.spring.ws.Environment;
 import br.com.nzz.spring.exception.WebServiceException;
 import br.com.nzz.spring.exception.WebServiceInternalException;
+import br.com.nzz.spring.ws.Environment;
 import br.com.nzz.spring.ws.WebServiceMessageSenderBuilder;
 
 /**
@@ -20,7 +23,7 @@ import br.com.nzz.spring.ws.WebServiceMessageSenderBuilder;
  * @param <R> the type of the response object
  * @author Luiz Felipe Nazari
  */
-interface GenericSoapRequest<P, R> {
+public interface GenericSoapRequest<P, R> {
 
 	/**
 	 * Sets the SOAP action or SOAP method.
@@ -64,6 +67,23 @@ interface GenericSoapRequest<P, R> {
 	SoapWebService getWebService();
 
 	/**
+	 * <p>Returns the WebServiceGatewaySupport used by the request sender.
+	 * <p>Allow behaviour modifications such as mocking.
+	 *
+	 * @return the gateway support
+	 */
+	WebServiceGatewaySupport getWebServiceGateway();
+
+	/**
+	 * <p>Register an consumer to the WebServiceGatewaySupport used by the request sender.
+	 * <p>Allow behaviour modifications such as mocking.
+	 *
+	 * @param wsGatewayConsumer the {@link WebServiceGatewaySupport} consumer.
+	 * @return the SOAP request
+	 */
+	GenericSoapRequest<P, R> doWithWebServiceGateway(Consumer<WebServiceGatewaySupport> wsGatewayConsumer);
+
+	/**
 	 * <p>Send an asynchronous request to the WebService with the specified payload object.</p>
 	 * <p>No runtime exception will be thrown by this method, if any exception occurs while
 	 * sending or receiving messages, it'll be returned in the {@link NzzCompletableFuture}'s
@@ -72,7 +92,7 @@ interface GenericSoapRequest<P, R> {
 	 * @param payload an completable future with the successful or unsuccessful response.
 	 * @return the SOAP request
 	 */
-	NzzCompletableFuture<R> send(P payload);
+	NzzCompletableFuture<R> send(@Nonnull P payload);
 
 	/**
 	 * <p>Send a synchronous request to the WebService with the specified payload object.</p>
@@ -82,6 +102,6 @@ interface GenericSoapRequest<P, R> {
 	 * @throws WebServiceException         if an exception occurs while sending or receiving messages.
 	 * @throws WebServiceInternalException if an internal exception occurs while sending or receiving messages.
 	 */
-	R sendSync(P payload) throws WebServiceException, WebServiceInternalException;
+	R sendSync(P payload) throws WebServiceInternalException;
 
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageConversionException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.ServletRequestBindingException;
@@ -16,9 +17,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import br.com.nzz.spring.NzzConstants;
 import br.com.nzz.spring.exception.ApiErrorMessage;
 import br.com.nzz.spring.exception.WebServiceEntityNotFoundException;
-import br.com.nzz.spring.NzzConstants;
 import br.com.nzz.spring.exception.WebServiceException;
 import br.com.nzz.validation.exception.CustomValidationException;
 import br.com.nzz.validation.message.ErrorMessage;
@@ -46,8 +47,8 @@ public class NzzRestControllerExceptionProcessor {
 	@ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
 	@ResponseBody
 	public List<ErrorMessage> exceptionRule(WebServiceException exception) {
-		log.trace(() -> exception.getError().getMessage(), exception);
-		return exception.getError()
+		log.trace(() -> exception.toErrorMessage().getMessage(), exception);
+		return exception.toErrorMessage()
 			.asErrorList();
 	}
 
@@ -61,7 +62,7 @@ public class NzzRestControllerExceptionProcessor {
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	@ResponseBody
 	public List<ErrorMessage> exceptionRule(WebServiceEntityNotFoundException exception) {
-		return exception.getError()
+		return exception.toErrorMessage()
 			.asErrorList();
 	}
 
@@ -103,10 +104,10 @@ public class NzzRestControllerExceptionProcessor {
 	 * @param exception {@link JsonProcessingException}
 	 * @return JSON {@link ApiErrorMessage}
 	 */
-	@ExceptionHandler(JsonProcessingException.class)
+	@ExceptionHandler({JsonProcessingException.class, HttpMessageNotReadableException.class})
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
 	@ResponseBody
-	public List<ErrorMessage> exceptionRule(JsonProcessingException exception) {
+	public List<ErrorMessage> malformedJsonExceptionRule(Exception exception) {
 		log.error(exception.getMessage(), exception);
 		return new ApiErrorMessage(NzzConstants.INVALID_JSON_ERROR, exception.getMessage())
 			.asErrorList();

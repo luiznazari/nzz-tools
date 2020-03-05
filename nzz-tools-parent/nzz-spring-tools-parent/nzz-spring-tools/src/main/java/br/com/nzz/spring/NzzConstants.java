@@ -1,5 +1,9 @@
 package br.com.nzz.spring;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public abstract class NzzConstants {
 
 	public static final String INTERNAL_ERROR = "internal.error";

@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class CertificateImporterOptions {
+abstract class CertificateImporterOptions {
 
 	private static final String CACERTS_FILENAME = "cacerts";
 	private static final String DEFAULT_KEY_STORE_PASSWORD = "changeit";

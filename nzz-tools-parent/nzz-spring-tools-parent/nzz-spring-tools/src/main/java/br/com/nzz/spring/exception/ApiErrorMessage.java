@@ -35,6 +35,7 @@ public class ApiErrorMessage implements ErrorMessage {
 		return this;
 	}
 
+	@Override
 	public String getMessage() {
 		if (this.message == null) {
 			this.message = I18n.getMessage(this.messageKey, this.messageParameters);

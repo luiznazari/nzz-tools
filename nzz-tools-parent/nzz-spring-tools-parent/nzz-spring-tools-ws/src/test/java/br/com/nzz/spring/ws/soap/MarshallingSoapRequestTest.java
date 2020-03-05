@@ -42,13 +42,13 @@ public class MarshallingSoapRequestTest extends UnitTest {
 		MockJaxb2Marshaller marshaller = new MockJaxb2Marshaller();
 		MarshallingSoapRequest<String, Boolean> envelopeSoap = new MarshallingSoapRequest<>(soapWs, marshaller);
 
-		MockWebServiceServer mockServer = MockWebServiceServer.createServer(envelopeSoap.getWsGateway());
+		MockWebServiceServer mockServer = MockWebServiceServer.createServer(envelopeSoap.getWebServiceGateway());
 		mockServer.expect(anything());
 		marshaller.setResponse(Boolean.FALSE);
 		envelopeSoap.withEnvironment(Environment.DEVELOPMENT).sendSync("false");
 		mockServer.verify();
 
-		mockServer = MockWebServiceServer.createServer(envelopeSoap.getWsGateway());
+		mockServer = MockWebServiceServer.createServer(envelopeSoap.getWebServiceGateway());
 		mockServer.expect(anything());
 		marshaller.setResponse(Boolean.TRUE);
 		envelopeSoap.withEnvironment(Environment.PRODUCTION).sendSync("true");
@@ -60,7 +60,7 @@ public class MarshallingSoapRequestTest extends UnitTest {
 		MockJaxb2Marshaller marshaller = new MockJaxb2Marshaller();
 		MarshallingSoapRequest<String, Boolean> envelopeSoap = new MarshallingSoapRequest<>(soapWs, marshaller);
 
-		MockWebServiceServer mockServer = MockWebServiceServer.createServer(envelopeSoap.getWsGateway());
+		MockWebServiceServer mockServer = MockWebServiceServer.createServer(envelopeSoap.getWebServiceGateway());
 		mockServer
 			.expect(anything())
 			.andRespond(ResponseCreators.withClientOrSenderFault("SOAP FAULT MESSAGE", Locale.getDefault()));
@@ -80,7 +80,7 @@ public class MarshallingSoapRequestTest extends UnitTest {
 		MockJaxb2Marshaller marshaller = new MockJaxb2Marshaller();
 		MarshallingSoapRequest<String, Boolean> envelopeSoap = new MarshallingSoapRequest<>(soapWs, marshaller);
 
-		MockWebServiceServer mockServer = MockWebServiceServer.createServer(envelopeSoap.getWsGateway());
+		MockWebServiceServer mockServer = MockWebServiceServer.createServer(envelopeSoap.getWebServiceGateway());
 		mockServer.expect(anything());
 		marshaller.setResponse(Boolean.FALSE);
 
@@ -98,7 +98,7 @@ public class MarshallingSoapRequestTest extends UnitTest {
 		MockJaxb2Marshaller marshaller = new MockJaxb2Marshaller();
 		MarshallingSoapRequest<String, Boolean> typedSoapRequest = new MarshallingSoapRequest<>(soapWs, marshaller);
 
-		MockWebServiceServer mockServer = MockWebServiceServer.createServer(typedSoapRequest.getWsGateway());
+		MockWebServiceServer mockServer = MockWebServiceServer.createServer(typedSoapRequest.getWebServiceGateway());
 		mockServer
 			.expect(anything())
 			.andRespond(ResponseCreators.withPayload(new StringSource("<content>false</content>")));
@@ -114,8 +114,8 @@ public class MarshallingSoapRequestTest extends UnitTest {
 			fail("Should have thrown an exception.");
 
 		} catch (WebServiceException e) {
-			assertEquals(NzzConstants.INTEGRATION_ERROR, e.getError().getMessageKey());
-			assertEquals(NzzConstants.INTERNAL_ERROR, e.getError().getMessageParameters()[0]);
+			assertEquals(NzzConstants.INTEGRATION_ERROR, e.toErrorMessage().getMessageKey());
+			assertEquals(NzzConstants.INTERNAL_ERROR, e.toErrorMessage().getMessageParameters()[0]);
 
 		} finally {
 			mockServer.verify();
@@ -136,11 +136,11 @@ public class MarshallingSoapRequestTest extends UnitTest {
 				"<birthDate>28/11/1994</birthDate>" +
 				"</soapTestResponse>");
 
-		Jaxb2Marshaller marshaller = SoapClient.createMarshaller(SoapTestRequestType.class);
+		Jaxb2Marshaller marshaller = TypedSoapRequest.createMarshaller(SoapTestRequestType.class);
 		TypedSoapRequest<SoapTestRequestType, SoapTestResponseType> typeTypedSoapRequest = TypedSoapRequest.from(soapWs, marshaller);
 
 		MockWebServiceServer mockServer = MockWebServiceServer
-			.createServer(((MarshallingSoapRequest) typeTypedSoapRequest).getWsGateway());
+			.createServer(typeTypedSoapRequest.getWebServiceGateway());
 		mockServer
 			.expect(RequestMatchers.payload(requestPayloadSource))
 			.andRespond(ResponseCreators.withPayload(responsePayloadSource));

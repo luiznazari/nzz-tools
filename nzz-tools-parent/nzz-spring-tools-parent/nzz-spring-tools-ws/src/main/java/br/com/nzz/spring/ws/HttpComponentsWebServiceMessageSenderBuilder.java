@@ -4,8 +4,7 @@ import org.apache.http.client.HttpClient;
 import org.springframework.ws.transport.WebServiceMessageSender;
 import org.springframework.ws.transport.http.HttpComponentsMessageSender;
 
-import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 import br.com.nzz.spring.NzzSpringWsConstants;
 import br.com.nzz.spring.exception.WebServiceException;
@@ -29,32 +28,30 @@ import br.com.nzz.spring.model.SSLProtocolVersion;
  */
 public class HttpComponentsWebServiceMessageSenderBuilder implements WebServiceMessageSenderBuilder {
 
-	private Integer readTimeoutInSeconds;
-	private Integer connectionTimeoutInSeconds;
 	private final SecureHttpClientBuilder httpClientBuilder;
 
 	public HttpComponentsWebServiceMessageSenderBuilder() {
 		this.httpClientBuilder = new HttpsClientBuilder();
 	}
 
-	public HttpComponentsWebServiceMessageSenderBuilder(Function<String, String> passwordDecoderFunction) {
+	public HttpComponentsWebServiceMessageSenderBuilder(UnaryOperator<String> passwordDecoderFunction) {
 		this.httpClientBuilder = new HttpsClientBuilder(passwordDecoderFunction);
 	}
 
 	@Override
 	public HttpComponentsWebServiceMessageSenderBuilder withReadTimeoutInSeconds(Integer readTimeoutInSeconds) {
-		this.readTimeoutInSeconds = readTimeoutInSeconds;
+		this.httpClientBuilder.withReadTimeoutInSeconds(readTimeoutInSeconds);
 		return this;
 	}
 
 	@Override
 	public HttpComponentsWebServiceMessageSenderBuilder withConnectionTimeoutInSeconds(Integer connectionTimeoutInSeconds) {
-		this.connectionTimeoutInSeconds = connectionTimeoutInSeconds;
+		this.httpClientBuilder.withConnectionTimeoutInSeconds(connectionTimeoutInSeconds);
 		return this;
 	}
 
 	@Override
-	public HttpComponentsWebServiceMessageSenderBuilder withPasswordDecoder(Function<String, String> passwordDecoderFunction) {
+	public HttpComponentsWebServiceMessageSenderBuilder withPasswordDecoder(UnaryOperator<String> passwordDecoderFunction) {
 		this.httpClientBuilder.withPasswordDecoder(passwordDecoderFunction);
 		return this;
 	}
@@ -100,20 +97,8 @@ public class HttpComponentsWebServiceMessageSenderBuilder implements WebServiceM
 		HttpClient httpClient = this.httpClientBuilder.build();
 
 		HttpComponentsMessageSender messageSender = new HttpComponentsMessageSender(httpClient);
-		this.configureTimeouts(messageSender);
 		this.finalizeProperties(messageSender);
 		return messageSender;
-	}
-
-	private void configureTimeouts(HttpComponentsMessageSender messageSender) {
-		if (this.readTimeoutInSeconds != null)
-			messageSender.setReadTimeout(getTimeoutMilliseconds(this.readTimeoutInSeconds));
-		if (this.readTimeoutInSeconds != null)
-			messageSender.setConnectionTimeout(getTimeoutMilliseconds(this.connectionTimeoutInSeconds));
-	}
-
-	private int getTimeoutMilliseconds(Integer readTimeoutInSeconds) {
-		return (int) TimeUnit.SECONDS.toMillis((long) readTimeoutInSeconds);
 	}
 
 	private void finalizeProperties(HttpComponentsMessageSender messageSender) {

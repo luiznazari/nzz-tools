@@ -6,7 +6,7 @@ import java.util.Set;
 
 public class TestValidationRule implements ValidationRule<BeautifulObject> {
 
-	public static final String ERROR = "test.random.error";
+	private static final String ERROR = "test.random.error";
 
 	@Override
 	public Set<ValidationError> validate(BeautifulObject object) {

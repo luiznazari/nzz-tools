@@ -4,7 +4,7 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 import br.com.nzz.spring.model.KeyStoreResource;
 import br.com.nzz.spring.model.ProxyScheme;
@@ -38,7 +38,7 @@ public class SecureRestTemplateBuilderImpl implements SecureRestTemplateBuilder 
 		this.secureHttpClientBuilder = new HttpsClientBuilder();
 	}
 
-	public SecureRestTemplateBuilderImpl(Function<String, String> passwordDecoderFunction) {
+	public SecureRestTemplateBuilderImpl(UnaryOperator<String> passwordDecoderFunction) {
 		this.secureHttpClientBuilder = new HttpsClientBuilder(passwordDecoderFunction);
 	}
 
@@ -61,7 +61,7 @@ public class SecureRestTemplateBuilderImpl implements SecureRestTemplateBuilder 
 	}
 
 	@Override
-	public SecureRestTemplateBuilderImpl withPasswordDecoder(Function<String, String> passwordDecoderFunction) {
+	public SecureRestTemplateBuilderImpl withPasswordDecoder(UnaryOperator<String> passwordDecoderFunction) {
 		this.secureHttpClientBuilder.withPasswordDecoder(passwordDecoderFunction);
 		return this;
 	}

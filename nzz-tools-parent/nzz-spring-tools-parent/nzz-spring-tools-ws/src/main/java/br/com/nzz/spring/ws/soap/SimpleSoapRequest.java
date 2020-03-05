@@ -1,10 +1,13 @@
 package br.com.nzz.spring.ws.soap;
 
 import org.springframework.ws.client.core.SourceExtractor;
+import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 import org.springframework.ws.transport.WebServiceMessageSender;
 import org.springframework.xml.transform.StringSource;
 
 import java.util.function.Consumer;
+
+import javax.annotation.Nonnull;
 
 import br.com.nzz.spring.exception.WebServiceException;
 import br.com.nzz.spring.ws.Environment;
@@ -56,7 +59,13 @@ public class SimpleSoapRequest extends WebServiceTemplateAbstractSoapRequest<Str
 	}
 
 	@Override
-	public String sendSync(String payload) throws WebServiceException {
+	public SimpleSoapRequest doWithWebServiceGateway(Consumer<WebServiceGatewaySupport> wsGatewayConsumer) {
+		super.doWithWebServiceGateway(wsGatewayConsumer);
+		return this;
+	}
+
+	@Override
+	public String sendSync(@Nonnull String payload) {
 		return super.send(() -> {
 			String wsdlUrl = this.webService.getUrlWsdl(this.environment);
 

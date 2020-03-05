@@ -1,10 +1,17 @@
 package br.com.nzz.spring.ws.soap;
 
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
+import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
+import org.springframework.ws.transport.WebServiceMessageSender;
+
+import java.util.function.Consumer;
 
 import br.com.nzz.commons.concurrent.NzzCompletableFuture;
+import br.com.nzz.spring.adapter.AdapterLoader;
 import br.com.nzz.spring.exception.WebServiceException;
 import br.com.nzz.spring.exception.WebServiceInternalException;
+import br.com.nzz.spring.ws.Environment;
+import br.com.nzz.spring.ws.WebServiceMessageSenderBuilder;
 
 
 /**
@@ -22,12 +29,42 @@ import br.com.nzz.spring.exception.WebServiceInternalException;
 public interface TypedSoapRequest<P, R> extends GenericSoapRequest<P, R> {
 
 	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	TypedSoapRequest<P, R> withAction(String soapAction);
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	TypedSoapRequest<P, R> withEnvironment(Environment environment);
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	TypedSoapRequest<P, R> withMessageSender(WebServiceMessageSender webServiceMessageSender);
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	TypedSoapRequest<P, R> withMessageSender(Consumer<WebServiceMessageSenderBuilder> webServiceMessageSenderBuilderConsumer);
+
+	/**
 	 * Sets the response extractor function to parse the response.
 	 *
 	 * @param responseExtractorFunction the response extractor function
 	 * @return the SOAP request
 	 */
 	TypedSoapRequest<P, R> withResponseExtractor(WebServiceBiFunction<Jaxb2Marshaller, Object, R> responseExtractorFunction);
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	TypedSoapRequest<P, R> doWithWebServiceGateway(Consumer<WebServiceGatewaySupport> wsGatewayConsumer);
 
 	/**
 	 * <p>Send an asynchronous request to the WebService with the specified payload XML.</p>
@@ -49,6 +86,17 @@ public interface TypedSoapRequest<P, R> extends GenericSoapRequest<P, R> {
 	 * @throws WebServiceInternalException if an internal exception occurs while sending or receiving messages.
 	 */
 	R sendXmlSync(String payload) throws WebServiceException, WebServiceInternalException;
+
+	static Jaxb2Marshaller createMarshaller(Class<?> payloadObjectClass) {
+		return createMarshaller(payloadObjectClass.getPackage().getName());
+	}
+
+	static Jaxb2Marshaller createMarshaller(String contextPath) {
+		Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
+		marshaller.setContextPath(contextPath);
+		marshaller.setAdapters(AdapterLoader.loadFromClassPath());
+		return marshaller;
+	}
 
 	static <E, S> TypedSoapRequest<E, S> from(SoapWebService soapWebService, Jaxb2Marshaller marshaller) {
 		return new MarshallingSoapRequest<>(soapWebService, marshaller);

@@ -24,6 +24,11 @@ public class CustomValidatorImpl implements CustomValidator {
 	}
 
 	@Override
+	public <T> ValidationResult validate(T object, Class<? extends ValidationRule<? super T>> validationRuleClass) {
+		return this.builder(object).with(validationRuleClass).validate();
+	}
+
+	@Override
 	public ValidationResult validate(Supplier<ValidationError> errorSupplier) {
 		return ValidationResult.empty().validate(errorSupplier);
 	}

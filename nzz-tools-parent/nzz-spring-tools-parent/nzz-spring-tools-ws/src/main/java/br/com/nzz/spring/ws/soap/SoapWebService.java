@@ -22,7 +22,11 @@ public class SoapWebService extends WebService {
 	}
 
 	private static String normalizeUrl(String url) {
-		return StringUtils.endsWithIgnoreCase(url, WSDL_PARAM) ? url.substring(0, WSDL_PARAM.length()) : url;
+		if (StringUtils.endsWithIgnoreCase(url, WSDL_PARAM)) {
+			int wsdlIndex = StringUtils.indexOfIgnoreCase(url, WSDL_PARAM);
+			return url.substring(0, wsdlIndex);
+		}
+		return url;
 	}
 
 	public static SoapWebService from(String url) {

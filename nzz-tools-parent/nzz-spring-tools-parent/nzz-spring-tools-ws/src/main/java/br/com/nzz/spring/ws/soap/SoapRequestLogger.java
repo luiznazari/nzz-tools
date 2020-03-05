@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.function.Supplier;
 
+import javax.annotation.Nonnull;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -18,18 +19,18 @@ import javax.xml.transform.stream.StreamResult;
 
 final class SoapRequestLogger {
 
-	private static final Logger log = LogManager.getLogger(GenericSoapRequest.class);
+	private static final Logger log = LogManager.getLogger(GenericSoapRequest.class); // NOSONAR
 
-	static void logSoapMessage(String message, WebServiceMessage soapMessage) {
+	static void logSoapMessage(@Nonnull String message, @Nonnull WebServiceMessage soapMessage) {
 		logSoapMessage(message, () -> soapMessageAsString(soapMessage));
 	}
 
-	static void logSoapMessageSource(String message, Source soapMessageSource) {
+	static void logSoapMessageSource(@Nonnull String message, @Nonnull Source soapMessageSource) {
 		logSoapMessage(message, () -> soapSourceAsString(soapMessageSource));
 	}
 
 	private static void logSoapMessage(String message, Supplier<String> soapXmlSupplier) {
-		log.trace(() -> String.format("%s. Payload:\n%s", message, soapXmlSupplier.get()));
+		log.trace(() -> String.format("%s. Payload:%n%s", message, soapXmlSupplier.get()));
 	}
 
 	private static String soapMessageAsString(WebServiceMessage soapMessage) {

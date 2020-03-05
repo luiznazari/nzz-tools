@@ -6,7 +6,7 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Logger name="br.com.nazari.security.jcacert" level="debug" additivity="false">
+        <Logger name="br.com.nzz.security.jcacert" level="debug" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
         <Root level="error">

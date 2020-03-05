@@ -7,7 +7,7 @@ abstract class NzzLoader {
 
 	static {
 		nzzCommonsEnabled = isClassInClassPath("br.com.nzz.commons.NzzDateUtils");
-		nzzSpringWsEnabled = isClassInClassPath("br.com.nzz.spring.ws.soap.SoapClient");
+		nzzSpringWsEnabled = isClassInClassPath("br.com.nzz.spring.NzzSpringWsConstants");
 	}
 
 	private static boolean isClassInClassPath(String className) {

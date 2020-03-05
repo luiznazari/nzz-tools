@@ -1,5 +1,12 @@
 package br.com.nzz.spring.exception;
 
+import com.google.common.collect.Lists;
+
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
+
+import br.com.nzz.validation.message.ErrorMessage;
 import lombok.Getter;
 
 /**
@@ -12,7 +19,7 @@ public class WebServiceException extends RuntimeException {
 	private static final long serialVersionUID = -5601844939372278210L;
 
 	@Getter
-	private ApiErrorMessage error;
+	private final List<Serializable> parameters = Lists.newLinkedList();
 
 	public WebServiceException(String errorMessageKey) {
 		this(errorMessageKey, null);
@@ -22,9 +29,13 @@ public class WebServiceException extends RuntimeException {
 		super(errorMessageKey, throwable);
 	}
 
-	public WebServiceException parameters(Object... params) {
-		this.error = new ApiErrorMessage(this.getMessage()).params(params);
+	public WebServiceException parameters(Serializable... params) {
+		this.parameters.addAll(Arrays.asList(params));
 		return this;
+	}
+
+	public ApiErrorMessage toErrorMessage() {
+		return new ApiErrorMessage(this.getMessage()).params(this.parameters.toArray());
 	}
 
 }
