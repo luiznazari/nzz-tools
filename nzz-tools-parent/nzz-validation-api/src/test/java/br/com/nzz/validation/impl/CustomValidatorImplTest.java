@@ -100,23 +100,23 @@ public class CustomValidatorImplTest {
 	}
 
 	@Test(expected = CustomValidatorImplTestException.class)
-	public void shouldThrowCustomExceptionOnError() {
+	public void shouldThrowCustomExceptionOnError() throws CustomValidatorImplTestException {
 		BeautifulObject object = validObject();
 		object.setName("");
 
 		ValidationResult validate = validator.validate(object);
 
-		validate.onErrorThrow((Supplier<Throwable>) CustomValidatorImplTestException::new);
+		validate.onErrorThrow((Supplier<CustomValidatorImplTestException>) CustomValidatorImplTestException::new);
 	}
 
 	@Test(expected = CustomValidatorImplTestException.class)
-	public void shouldThrowCustomExceptionWithParametersOnError() {
+	public void shouldThrowCustomExceptionWithParametersOnError() throws CustomValidatorImplTestException {
 		BeautifulObject object = validObject();
 		object.setName("");
 
 		ValidationResult validate = validator.validate(object);
 
-		validate.onErrorThrow((Function<Set<? extends ValidationError>, Throwable>) CustomValidatorImplTestException::new);
+		validate.onErrorThrow((Function<Set<? extends ValidationError>, CustomValidatorImplTestException>) CustomValidatorImplTestException::new);
 	}
 
 	private BeautifulObject validObject() {

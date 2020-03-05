@@ -24,6 +24,21 @@
         </developer>
     </developers>
 
+    <repositories>
+        <repository>
+            <id>spring-releases</id>
+            <name>Spring Releases</name>
+            <url>https://repo.spring.io/libs-release</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-releases</id>
+            <url>https://repo.spring.io/libs-release</url>
+        </pluginRepository>
+    </pluginRepositories>
+
     <properties>
         <java.version>1.8</java.version>
         <junit.version>4.12</junit.version>
@@ -175,7 +190,7 @@
 
     <profiles>
         <profile>
-            <id>source+javacods</id>
+            <id>source+javadocs</id>
             <build>
                 <plugins>
                     <plugin>

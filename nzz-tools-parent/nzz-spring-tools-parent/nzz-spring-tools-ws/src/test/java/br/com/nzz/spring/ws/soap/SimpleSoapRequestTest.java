@@ -34,8 +34,7 @@ public class SimpleSoapRequestTest extends UnitTest {
 		SoapRequest soapRequest = SoapRequest.from(soapWs)
 			.withEnvironment(Environment.DEVELOPMENT);
 
-		MockWebServiceServer mockServer = MockWebServiceServer
-			.createServer(((SimpleSoapRequest) soapRequest).getWebServiceGateway());
+		MockWebServiceServer mockServer = MockWebServiceServer.createServer(soapRequest.getWebServiceGateway());
 		mockServer.expect(RequestMatchers.payload(new StringSource(payloadXml)));
 
 		soapRequest.sendSync(payloadXml);
@@ -73,6 +72,23 @@ public class SimpleSoapRequestTest extends UnitTest {
 			.getMessageSenders())
 			.anyMatch(messageSender -> messageSender == webServiceMessageSender);
 		assertTrue(hasBuiltHttpsMessageSender);
+	}
+
+	@Test
+	public void shouldSendPlainXmlRequestWithEscapedCharacters() throws WebServiceInternalException {
+		final String payloadXml = "<xml>&lt;ROWDATA&gt;&lt;ROW TOKEN = &quot;00000000-0000-0000-0000-000000000000&quot; EMBARC_CNPJ = &quot;00000000000000&quot;/&gt;&lt;/ROWDATA&gt;</xml>";
+		final String soapEnvelopeXml = "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\"><SOAP-ENV:Header/><SOAP-ENV:Body>" +
+			payloadXml + "</SOAP-ENV:Body></SOAP-ENV:Envelope>";
+
+		SoapRequest soapRequest = SoapRequest.from(soapWs)
+			.withEnvironment(Environment.DEVELOPMENT);
+
+		MockWebServiceServer mockServer = MockWebServiceServer.createServer(soapRequest.getWebServiceGateway());
+		mockServer.expect(RequestMatchers.soapEnvelope(new StringSource(soapEnvelopeXml)));
+
+		soapRequest.sendSync(payloadXml);
+
+		mockServer.verify();
 	}
 
 }
