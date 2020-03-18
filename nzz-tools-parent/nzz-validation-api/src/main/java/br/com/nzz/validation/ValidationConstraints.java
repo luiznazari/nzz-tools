@@ -4,6 +4,8 @@ import java.time.temporal.Temporal;
 import java.util.Collection;
 import java.util.function.Supplier;
 
+import javax.annotation.Nullable;
+
 import br.com.nzz.validation.impl.I18nValidationError;
 import br.com.nzz.validation.utils.StringUtils;
 
@@ -19,7 +21,7 @@ public abstract class ValidationConstraints {
 	private ValidationConstraints() {
 	}
 
-	public static Supplier<ValidationError> notEmpty(String string, String errorMessageKey) {
+	public static Supplier<ValidationError> notEmpty(@Nullable String string, String errorMessageKey) {
 		return mustBeFalse(() -> StringUtils.isEmpty(string), errorMessageKey);
 	}
 

@@ -1,5 +1,6 @@
 package br.com.nzz.spring.ws.soap;
 
+import org.springframework.ws.client.WebServiceTransformerException;
 import org.springframework.ws.client.core.SourceExtractor;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 import org.springframework.ws.transport.WebServiceMessageSender;
@@ -71,10 +72,15 @@ public class SimpleSoapRequest extends WebServiceTemplateAbstractSoapRequest<Str
 
 			SourceExtractor<String> sourceExtractor = new SourceStringResponseExtractor();
 
-			return this.wsGateway.getWebServiceTemplate().sendSourceAndReceive(wsdlUrl,
-				new StringSource(payload),
-				configureRequestCallback(),
-				sourceExtractor);
+			try {
+				return this.wsGateway.getWebServiceTemplate().sendSourceAndReceive(wsdlUrl,
+					new StringSource(payload),
+					configureRequestCallback(),
+					sourceExtractor);
+			} catch (WebServiceTransformerException e) {
+				log.error("Failed to send the payload:\n\t" + payload + "\n\tMessage: " + e.getMessage(), e);
+				throw e;
+			}
 		});
 	}
 

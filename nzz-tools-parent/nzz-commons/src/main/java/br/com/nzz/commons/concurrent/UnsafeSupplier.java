@@ -1,8 +1,9 @@
 package br.com.nzz.commons.concurrent;
 
 @FunctionalInterface
-public interface UnsafeSupplier<T> {
+public interface UnsafeSupplier<R, T extends Throwable> {
 
-	T get() throws Throwable;
+	R get() throws T;
 
 }
+

@@ -8,7 +8,7 @@ public final class NzzFutures {
 	private NzzFutures() {
 	}
 
-	public static <R> NzzCompletableFuture<R> resolve(UnsafeSupplier<R> supplier) {
+	public static <R, T extends Throwable> NzzCompletableFuture<R> resolve(UnsafeSupplier<R, T> supplier) {
 		return new NzzCompletableFuture<>(supplier);
 	}
 

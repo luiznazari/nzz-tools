@@ -1,6 +1,7 @@
 package br.com.nzz.spring.ws.soap;
 
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
+import org.springframework.ws.client.WebServiceTransformerException;
 import org.springframework.ws.client.core.SourceExtractor;
 import org.springframework.ws.client.core.WebServiceMessageCallback;
 import org.springframework.ws.client.core.WebServiceMessageExtractor;
@@ -109,10 +110,15 @@ public class MarshallingSoapRequest<P, R> extends WebServiceTemplateAbstractSoap
 			SourceExtractor<R> sourceResponseExtractor = new SourceUnMarshallerResponseExtractor<>(
 				this.marshaller, this.responseExtractorFunction);
 
-			return this.wsGateway.getWebServiceTemplate().sendSourceAndReceive(wsdlUrl,
-				new StringSource(payload),
-				super.configureRequestCallback(),
-				sourceResponseExtractor);
+			try {
+				return this.wsGateway.getWebServiceTemplate().sendSourceAndReceive(wsdlUrl,
+					new StringSource(payload),
+					super.configureRequestCallback(),
+					sourceResponseExtractor);
+			} catch (WebServiceTransformerException e) {
+				log.error("Failed to send the payload:\n\t" + payload + "\n\tMessage: " + e.getMessage(), e);
+				throw e;
+			}
 		});
 	}
 

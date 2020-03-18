@@ -9,10 +9,10 @@
     <parent>
         <artifactId>nzz-spring-tools-parent</artifactId>
         <groupId>br.com.nzz.tools</groupId>
-        <version>1.3.2</version>
+        <version>1.3.3</version>
     </parent>
 
-    <version>1.3.2</version>
+    <version>1.3.3</version>
     <packaging>jar</packaging>
 
     <dependencies>

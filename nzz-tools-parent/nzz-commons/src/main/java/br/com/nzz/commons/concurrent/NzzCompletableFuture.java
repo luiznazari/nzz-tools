@@ -17,10 +17,10 @@ import java.util.function.Function;
  */
 public class NzzCompletableFuture<R> implements Future<R>, CompletionStage<R> {
 
-	private final UnsafeSupplier<R> completableSupplier;
+	private final UnsafeSupplier<R, ? extends Throwable> completableSupplier;
 	private final CompletableFuture<R> delegate;
 
-	NzzCompletableFuture(UnsafeSupplier<R> supplier) {
+	NzzCompletableFuture(UnsafeSupplier<R, ? extends Throwable> supplier) {
 		this.completableSupplier = supplier;
 		this.delegate = new CompletableFuture<>();
 		executeAsynchronously();

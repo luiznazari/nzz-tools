@@ -3,6 +3,9 @@ package br.com.nzz.commons;
 import org.junit.Test;
 
 import static br.com.nzz.commons.NzzNumberUtils.extractNumber;
+import static br.com.nzz.commons.NzzNumberUtils.isDecimalNumber;
+import static br.com.nzz.commons.NzzNumberUtils.isNumber;
+import static br.com.nzz.commons.NzzNumberUtils.removeNonNumberCharacters;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
@@ -36,6 +39,52 @@ public class NzzNumberUtilsTest {
 		} else {
 			assertEquals(expected, actual, org.apache.commons.lang3.math.NumberUtils.DOUBLE_ZERO);
 		}
+	}
+
+	@Test
+	public void shouldDetectValidNumbers() {
+		assertValidNumber(null, false);
+		assertValidNumber("", false);
+		assertValidNumber(".", false);
+		assertValidNumber(":)", false);
+		assertValidNumber("Hola", false);
+		assertValidNumber("Eu sou um número?", false);
+		assertValidNumber("0", true);
+		assertValidNumber(".0", false);
+		assertValidNumber("0.", false);
+		assertValidNumber("0.0", false);
+		assertValidNumber("0.1", false);
+	}
+
+	private void assertValidNumber(String valor, boolean isValid) {
+		assertEquals(isValid, isNumber(valor));
+	}
+
+	@Test
+	public void shouldDetectValidDecimalNumbers() {
+		assertDecimalNumber(null, false);
+		assertDecimalNumber("", false);
+		assertDecimalNumber(".", false);
+		assertDecimalNumber(":)", false);
+		assertDecimalNumber("Hola", false);
+		assertDecimalNumber("Eu sou um número?", false);
+		assertDecimalNumber("0", true);
+		assertDecimalNumber(".0", true);
+		assertDecimalNumber("0.", true);
+		assertDecimalNumber("0.0", true);
+		assertDecimalNumber("0.1", true);
+	}
+
+	private void assertDecimalNumber(String valor, boolean isValid) {
+		assertEquals(isValid, isDecimalNumber(valor));
+	}
+
+	@Test
+	public void shouldRemoveNonNumberCharacters() {
+		assertEquals("", removeNonNumberCharacters(null));
+		assertEquals("", removeNonNumberCharacters(""));
+		assertEquals("", removeNonNumberCharacters("    "));
+		assertEquals("9234923", removeNonNumberCharacters(" 9s23asd4 9Z23 "));
 	}
 
 }
