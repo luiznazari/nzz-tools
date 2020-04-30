@@ -19,7 +19,10 @@ public abstract class I18n {
 	private static final Pattern PATTERN_PARAMETER = Pattern.compile("\\{(\\d*)}");
 
 	static {
-		VALIDATION_MESSAGES = new NullSafeResourceBundle("ValidationMessages");
+		String validationMessagesBundleName = System.getProperty(
+			"nzz.validation.message-bundle-name",
+			"ValidationMessages");
+		VALIDATION_MESSAGES = new NullSafeResourceBundle(validationMessagesBundleName);
 	}
 
 	public static String getMessage(String key, Object... parameters) {

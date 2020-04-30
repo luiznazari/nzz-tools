@@ -3,11 +3,11 @@ package br.com.nzz.spring.ws.soap;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 import org.springframework.ws.transport.WebServiceMessageSender;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
 
-import br.com.nzz.commons.concurrent.NzzCompletableFuture;
 import br.com.nzz.spring.exception.WebServiceException;
 import br.com.nzz.spring.exception.WebServiceInternalException;
 import br.com.nzz.spring.ws.Environment;
@@ -86,13 +86,13 @@ public interface GenericSoapRequest<P, R> {
 	/**
 	 * <p>Send an asynchronous request to the WebService with the specified payload object.</p>
 	 * <p>No runtime exception will be thrown by this method, if any exception occurs while
-	 * sending or receiving messages, it'll be returned in the {@link NzzCompletableFuture}'s
+	 * sending or receiving messages, it'll be returned in the {@link CompletableFuture}'s
 	 * callbacks.</p>
 	 *
 	 * @param payload an completable future with the successful or unsuccessful response.
-	 * @return the SOAP request
+	 * @return the completable future that will be completed when the SOAP request is done
 	 */
-	NzzCompletableFuture<R> send(@Nonnull P payload);
+	CompletableFuture<R> send(@Nonnull P payload);
 
 	/**
 	 * <p>Send a synchronous request to the WebService with the specified payload object.</p>

@@ -4,9 +4,9 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 import org.springframework.ws.transport.WebServiceMessageSender;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-import br.com.nzz.commons.concurrent.NzzCompletableFuture;
 import br.com.nzz.spring.adapter.AdapterLoader;
 import br.com.nzz.spring.exception.WebServiceException;
 import br.com.nzz.spring.exception.WebServiceInternalException;
@@ -69,13 +69,13 @@ public interface TypedSoapRequest<P, R> extends GenericSoapRequest<P, R> {
 	/**
 	 * <p>Send an asynchronous request to the WebService with the specified payload XML.</p>
 	 * <p>No runtime exception will be thrown by this method, if any exception occurs while
-	 * sending or receiving messages, it'll be returned in the {@link NzzCompletableFuture}'s
+	 * sending or receiving messages, it'll be returned in the {@link CompletableFuture}'s
 	 * callbacks.</p>
 	 *
 	 * @param payload an completable future with the successful or unsuccessful response.
-	 * @return the SOAP request
+	 * @return the completable future that will be completed when the SOAP request is done
 	 */
-	NzzCompletableFuture<R> sendXml(String payload);
+	CompletableFuture<R> sendXml(String payload);
 
 	/**
 	 * <p>Send a synchronous request to the WebService with the specified payload XML.</p>
@@ -85,7 +85,7 @@ public interface TypedSoapRequest<P, R> extends GenericSoapRequest<P, R> {
 	 * @throws WebServiceException         if an exception occurs while sending or receiving messages.
 	 * @throws WebServiceInternalException if an internal exception occurs while sending or receiving messages.
 	 */
-	R sendXmlSync(String payload) throws WebServiceException, WebServiceInternalException;
+	R sendXmlSync(String payload) throws WebServiceInternalException;
 
 	static Jaxb2Marshaller createMarshaller(Class<?> payloadObjectClass) {
 		return createMarshaller(payloadObjectClass.getPackage().getName());

@@ -4,6 +4,7 @@ import org.w3c.dom.Document;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -20,8 +21,6 @@ import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPFault;
 import javax.xml.soap.SOAPMessage;
 
-import br.com.nzz.commons.concurrent.NzzCompletableFuture;
-import br.com.nzz.commons.concurrent.NzzFutures;
 import br.com.nzz.spring.exception.WebServiceException;
 import br.com.nzz.spring.ws.Environment;
 import br.com.nzz.spring.ws.soap.SoapWebService;
@@ -72,7 +71,7 @@ public class JavaxMarshallingSoapRequestSender {
 	/**
 	 * <p>Send an asynchronous request to the WebService with the specified payload object.</p>
 	 * <p>No runtime exception will be thrown by this method, if any exception occurs while
-	 * sending or receiving messages, it'll be returned in the {@link NzzCompletableFuture}'s
+	 * sending or receiving messages, it'll be returned in the {@link CompletableFuture}'s
 	 * callbacks.</p>
 	 *
 	 * @param <P>           the the payload object
@@ -81,8 +80,8 @@ public class JavaxMarshallingSoapRequestSender {
 	 * @param responseClass the response type class
 	 * @return the response payload object
 	 */
-	public <P, R> NzzCompletableFuture<R> send(P payload, Class<R> responseClass) {
-		return NzzFutures.resolve(() -> this.sendSync(payload, responseClass));
+	public <P, R> CompletableFuture<R> send(P payload, Class<R> responseClass) {
+		return CompletableFuture.supplyAsync(() -> this.sendSync(payload, responseClass));
 	}
 
 	/**
@@ -148,7 +147,9 @@ public class JavaxMarshallingSoapRequestSender {
 			headers.addHeader(SOAP_ACTION_HEADER, this.soapAction);
 		}
 
-		Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		documentBuilderFactory.setExpandEntityReferences(false);
+		Document document = documentBuilderFactory.newDocumentBuilder().newDocument();
 		this.marshaller.marshal(payload, document);
 		soapMessage.getSOAPBody().addDocument(document);
 

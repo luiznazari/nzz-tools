@@ -12,6 +12,7 @@ import br.com.nzz.validation.impl.CustomValidatorImpl;
 public class NzzValidationConfiguration {
 
 	@Bean
+	@ConditionalOnClass(CustomValidatorImpl.class)
 	public CustomValidator customValidatorBean() {
 		return new CustomValidatorImpl();
 	}

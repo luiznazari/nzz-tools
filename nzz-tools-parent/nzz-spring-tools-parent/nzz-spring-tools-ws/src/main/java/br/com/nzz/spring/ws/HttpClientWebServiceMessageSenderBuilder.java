@@ -1,11 +1,11 @@
 package br.com.nzz.spring.ws;
 
-import org.apache.commons.io.IOUtils;
 import org.springframework.ws.transport.WebServiceMessageSender;
 import org.springframework.ws.transport.http.HttpUrlConnectionMessageSender;
 import org.springframework.ws.transport.http.HttpsUrlConnectionMessageSender;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -184,8 +184,9 @@ public class HttpClientWebServiceMessageSenderBuilder implements WebServiceMessa
 
 	private KeyStore loadKeyStore(KeyStoreResource keyStoreResource) throws IOException, CertificateException, NoSuchAlgorithmException, KeyStoreException {
 		KeyStore keyStoreInstance = KeyStore.getInstance(keyStoreResource.getType().name());
-		keyStoreInstance.load(keyStoreResource.getInputStream(), decodePassword(keyStoreResource.getPassword()));
-		IOUtils.closeQuietly(keyStoreResource.getInputStream());
+		try (InputStream keyStoreInputStream = keyStoreResource.getInputStream()) {
+			keyStoreInstance.load(keyStoreInputStream, decodePassword(keyStoreResource.getPassword()));
+		}
 		return keyStoreInstance;
 	}
 

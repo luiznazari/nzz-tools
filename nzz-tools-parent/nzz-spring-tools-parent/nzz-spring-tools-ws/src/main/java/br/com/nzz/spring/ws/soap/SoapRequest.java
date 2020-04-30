@@ -2,11 +2,11 @@ package br.com.nzz.spring.ws.soap;
 
 import org.springframework.ws.transport.WebServiceMessageSender;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
 
-import br.com.nzz.commons.concurrent.NzzCompletableFuture;
 import br.com.nzz.spring.exception.WebServiceException;
 import br.com.nzz.spring.exception.WebServiceInternalException;
 import br.com.nzz.spring.ws.Environment;
@@ -51,7 +51,7 @@ public interface SoapRequest extends GenericSoapRequest<String, String> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	NzzCompletableFuture<String> send(@Nonnull String payload);
+	CompletableFuture<String> send(@Nonnull String payload);
 
 	/**
 	 * {@inheritDoc}
