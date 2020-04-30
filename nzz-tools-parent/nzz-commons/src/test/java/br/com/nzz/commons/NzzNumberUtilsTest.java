@@ -1,6 +1,11 @@
 package br.com.nzz.commons;
 
+import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.IntStream;
 
 import static br.com.nzz.commons.NzzNumberUtils.extractNumber;
 import static br.com.nzz.commons.NzzNumberUtils.isDecimalNumber;
@@ -86,5 +91,27 @@ public class NzzNumberUtilsTest {
 		assertEquals("", removeNonNumberCharacters("    "));
 		assertEquals("9234923", removeNonNumberCharacters(" 9s23asd4 9Z23 "));
 	}
+
+	@Test
+	public void extractorMethodsShouldBeThreadSafe() {
+		final String number = "1";
+		List<String> failedIterations = new ArrayList<>();
+
+		IntStream.range(0, 1000)
+			.parallel()
+			.forEach(i -> {
+				try {
+					assertEquals(1, extractNumber(number)
+						.orElseThrow(NumberFormatException::new).intValue());
+				} catch (Exception | AssertionError e) {
+					failedIterations.add("Failed at iteration " + i + ", reason: " + e.getMessage());
+				}
+			});
+
+		if (!failedIterations.isEmpty()) {
+			Assert.fail(String.join("\n", failedIterations));
+		}
+	}
+
 
 }

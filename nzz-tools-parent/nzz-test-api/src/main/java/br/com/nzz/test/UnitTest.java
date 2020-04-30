@@ -36,8 +36,9 @@ public abstract class UnitTest {
 	 * @param <T>         type of the mock
 	 * @return mock object
 	 */
-	public <T> T mock(Class<T> classToMock) {
-		return Mockito.mock(classToMock);
+	@SuppressWarnings("unchecked")
+	public <T> T mock(Class<?> classToMock) {
+		return (T) Mockito.mock(classToMock);
 	}
 
 

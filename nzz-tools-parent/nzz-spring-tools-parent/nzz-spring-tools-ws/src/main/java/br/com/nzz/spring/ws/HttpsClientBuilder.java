@@ -1,7 +1,5 @@
 package br.com.nzz.spring.ws;
 
-import org.apache.commons.io.Charsets;
-import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpRequestInterceptor;
@@ -19,6 +17,7 @@ import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.ssl.SSLContexts;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -27,7 +26,6 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 import javax.net.ssl.SSLContext;
@@ -242,8 +240,9 @@ public class HttpsClientBuilder implements SecureHttpClientBuilder {
 
 	private KeyStore loadKeyStore(KeyStoreResource keyStoreResource) throws IOException, CertificateException, NoSuchAlgorithmException, KeyStoreException {
 		KeyStore keyStoreInstance = KeyStore.getInstance(keyStoreResource.getType().name());
-		keyStoreInstance.load(keyStoreResource.getInputStream(), decodePassword(keyStoreResource.getPassword()));
-		IOUtils.closeQuietly(keyStoreResource.getInputStream());
+		try (InputStream keyStoreInputStream = keyStoreResource.getInputStream()) {
+			keyStoreInstance.load(keyStoreInputStream, decodePassword(keyStoreResource.getPassword()));
+		}
 		return keyStoreInstance;
 	}
 
@@ -252,10 +251,9 @@ public class HttpsClientBuilder implements SecureHttpClientBuilder {
 	}
 
 	private HttpRequestInterceptor contentLengthHeaderRemover() {
-		return (HttpRequest request, HttpContext context) -> {
-			// Prevents error org.apache.http.protocol.RequestContent's org.apache.http.ProtocolException: Content-Length header already present.
+		// Prevents error org.apache.http.protocol.RequestContent's org.apache.http.ProtocolException: Content-Length header already present.
+		return (HttpRequest request, HttpContext context) ->
 			request.removeHeaders(HTTP.CONTENT_LEN);
-		};
 	}
 
 }

@@ -10,12 +10,11 @@ import org.springframework.ws.support.MarshallingUtils;
 import org.springframework.ws.transport.WebServiceMessageSender;
 import org.springframework.xml.transform.StringSource;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
 
-import br.com.nzz.commons.concurrent.NzzCompletableFuture;
-import br.com.nzz.commons.concurrent.NzzFutures;
 import br.com.nzz.spring.exception.WebServiceException;
 import br.com.nzz.spring.ws.Environment;
 import br.com.nzz.spring.ws.WebServiceMessageSenderBuilder;
@@ -98,8 +97,8 @@ public class MarshallingSoapRequest<P, R> extends WebServiceTemplateAbstractSoap
 	}
 
 	@Override
-	public NzzCompletableFuture<R> sendXml(@Nonnull String payload) {
-		return NzzFutures.resolve(() -> this.sendXmlSync(payload));
+	public CompletableFuture<R> sendXml(@Nonnull String payload) {
+		return CompletableFuture.supplyAsync(() -> this.sendXmlSync(payload));
 	}
 
 	@Override

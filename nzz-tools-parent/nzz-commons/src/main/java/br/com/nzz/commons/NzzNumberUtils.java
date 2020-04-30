@@ -35,9 +35,6 @@ public abstract class NzzNumberUtils {
 	 */
 	private static final Pattern PATTERN_TEXT_NUMBER_PT_BR = Pattern.compile("[\\D,.]*(\\d+,\\d+|\\d+(?:(?:\\.\\d{3})+),\\d+)[\\D,.]*");
 
-	private static final NumberFormat NUMBER_FORMAT_EN = NumberFormat.getNumberInstance(Locale.forLanguageTag("en"));
-	private static final NumberFormat NUMBER_FORMAT_PT_BR = NumberFormat.getNumberInstance(Locale.forLanguageTag("pt-BR"));
-
 	/**
 	 * Try to parse the string as Double. Matches ISO format (#.## or #,###,###.##)
 	 * and brazilian format (#,## or #.###.###,##). To extract a number within a
@@ -58,10 +55,10 @@ public abstract class NzzNumberUtils {
 	private static Optional<Double> parseNumberFromText(String text) throws ParseException {
 		if (StringUtils.isNotEmpty(text)) {
 			if (PATTERN_NUMBER_EN.matcher(text).matches()) {
-				return Optional.of(NUMBER_FORMAT_EN.parse(text).doubleValue());
+				return Optional.of(getNumberFormatEn().parse(text).doubleValue());
 
 			} else if (PATTERN_NUMBER_PT_BR.matcher(text).matches()) {
-				return Optional.of(NUMBER_FORMAT_PT_BR.parse(text).doubleValue());
+				return Optional.of(getNumberFormatPtBr().parse(text).doubleValue());
 			}
 		}
 		return Optional.empty();
@@ -88,16 +85,23 @@ public abstract class NzzNumberUtils {
 		if (StringUtils.isNotEmpty(text)) {
 			Matcher matcher;
 
-			if ((matcher = PATTERN_TEXT_NUMBER_EN.matcher(text)).matches()) { // NOSONAR
+			if ((matcher = PATTERN_TEXT_NUMBER_EN.matcher(text)).matches()) {
 				String number = matcher.group(1);
-				return Optional.of(NUMBER_FORMAT_EN.parse(number).doubleValue());
+				return Optional.of(getNumberFormatEn().parse(number).doubleValue());
 
-			} else if ((matcher = PATTERN_TEXT_NUMBER_PT_BR.matcher(text)).matches()) { // NOSONAR
+			} else if ((matcher = PATTERN_TEXT_NUMBER_PT_BR.matcher(text)).matches()) {
 				String number = matcher.group(1);
-				return Optional.of(NUMBER_FORMAT_PT_BR.parse(number).doubleValue());
+				return Optional.of(getNumberFormatPtBr().parse(number).doubleValue());
 			}
 		}
 		return Optional.empty();
+	}
+
+	private static NumberFormat getNumberFormatEn(){
+		return NumberFormat.getNumberInstance(Locale.forLanguageTag("en"));
+	}
+	private static NumberFormat getNumberFormatPtBr(){
+		return NumberFormat.getNumberInstance(Locale.forLanguageTag("pt-BR"));
 	}
 
 	/**

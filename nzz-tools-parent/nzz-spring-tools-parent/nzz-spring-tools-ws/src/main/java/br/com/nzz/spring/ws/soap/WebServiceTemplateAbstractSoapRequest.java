@@ -8,19 +8,18 @@ import org.springframework.ws.soap.client.core.SoapActionCallback;
 import org.springframework.ws.transport.WebServiceMessageSender;
 
 import java.net.SocketTimeoutException;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 
-import br.com.nzz.commons.concurrent.NzzCompletableFuture;
-import br.com.nzz.commons.concurrent.NzzFutures;
 import br.com.nzz.spring.NzzConstants;
 import br.com.nzz.spring.exception.WebServiceException;
+import br.com.nzz.spring.exception.WebServiceInternalException;
 import br.com.nzz.spring.ws.Environment;
 import br.com.nzz.spring.ws.HttpClientWebServiceMessageSenderBuilder;
 import br.com.nzz.spring.ws.WebServiceMessageSenderBuilder;
-import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
 /**
@@ -77,8 +76,14 @@ public abstract class WebServiceTemplateAbstractSoapRequest<P, R> implements Gen
 	}
 
 	@Override
-	public NzzCompletableFuture<R> send(@Nonnull P payload) {
-		return NzzFutures.resolve(() -> this.sendSync(payload));
+	public CompletableFuture<R> send(@Nonnull P payload) {
+		return CompletableFuture.supplyAsync(() -> {
+			try {
+				return this.sendSync(payload);
+			} catch (WebServiceInternalException e) {
+				throw e.runtime();
+			}
+		});
 	}
 
 	@Override
