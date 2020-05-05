@@ -33,7 +33,7 @@ public abstract class NzzFutures {
 	}
 
 	@SuppressWarnings("squid:S1452") // usage of generic wildcard type
-	static <T> CompletableFuture<List<FutureResult<? extends T>>> all(Collection<CompletableFuture<? extends T>> futuresList) {
+	public static <T> CompletableFuture<List<FutureResult<? extends T>>> all(Collection<CompletableFuture<? extends T>> futuresList) {
 		return CompletableFuture.allOf(futuresList.toArray(new CompletableFuture[0]))
 			.thenApplyAsync(v ->
 				futuresList.stream()
@@ -44,7 +44,7 @@ public abstract class NzzFutures {
 
 	@SafeVarargs
 	@SuppressWarnings("squid:S1452") // usage of generic wildcard type
-	static <T> CompletableFuture<List<FutureResult<? extends T>>> all(CompletableFuture<? extends T>... futures) {
+	public static <T> CompletableFuture<List<FutureResult<? extends T>>> all(CompletableFuture<? extends T>... futures) {
 		return CompletableFuture.allOf(futures)
 			.thenApplyAsync(v ->
 				Stream.of(futures)
@@ -53,11 +53,11 @@ public abstract class NzzFutures {
 			);
 	}
 
-	static <T> CompletableFuture<Void> allOf(Collection<CompletableFuture<? extends T>> futuresList) {
+	public static <T> CompletableFuture<Void> allOf(Collection<CompletableFuture<? extends T>> futuresList) {
 		return CompletableFuture.allOf(futuresList.toArray(new CompletableFuture[0]));
 	}
 
-	static <T> FutureResult<T> getSafeResult(@Nonnull CompletableFuture<T> future) {
+	public static <T> FutureResult<T> getSafeResult(@Nonnull CompletableFuture<T> future) {
 		if (isFailed(future)) {
 			MutableObject<Throwable> throwableMutableObject = new MutableObject<>();
 			future.exceptionally(throwable -> {
@@ -69,7 +69,7 @@ public abstract class NzzFutures {
 		return new FutureResult<>(future.join(), null);
 	}
 
-	static boolean isFailed(@Nonnull CompletableFuture<?> future) {
+	public static boolean isFailed(@Nonnull CompletableFuture<?> future) {
 		return future.isCompletedExceptionally() || future.isCancelled();
 	}
 
@@ -82,7 +82,7 @@ public abstract class NzzFutures {
 	 * @return the completed CompletableFuture
 	 * @see CompletableFuture#completedFuture(Object)
 	 */
-	static <U> CompletableFuture<U> completedExceptionally(Throwable throwable) {
+	public static <U> CompletableFuture<U> completedExceptionally(Throwable throwable) {
 		CompletableFuture<U> completableFuture = new CompletableFuture<>();
 		completableFuture.completeExceptionally(throwable);
 		return completableFuture;
@@ -95,7 +95,7 @@ public abstract class NzzFutures {
 	 *
 	 * @param futures the futures to await for
 	 */
-	static void awaitQuietly(CompletableFuture<?>... futures) {
+	public static void awaitQuietly(CompletableFuture<?>... futures) {
 		awaitQuietly(Arrays.asList(futures));
 	}
 
@@ -106,7 +106,7 @@ public abstract class NzzFutures {
 	 *
 	 * @param futures the futures to await for
 	 */
-	static void awaitQuietly(Collection<CompletableFuture<?>> futures) {
+	public static void awaitQuietly(Collection<CompletableFuture<?>> futures) {
 		try {
 			awaitExecution(futures);
 		} catch (ExecutionException | CancellationException exception) {
@@ -122,7 +122,7 @@ public abstract class NzzFutures {
 	 * @param futures the futures to await for
 	 * @throws ExecutionRuntimeException if any of the futures completed exceptionally
 	 */
-	static void await(CompletableFuture<?>... futures) {
+	public static void await(CompletableFuture<?>... futures) {
 		await(Arrays.asList(futures));
 	}
 
@@ -133,7 +133,7 @@ public abstract class NzzFutures {
 	 * @param futures the futures to await for
 	 * @throws ExecutionRuntimeException if any of the futures completed exceptionally
 	 */
-	static void await(Collection<CompletableFuture<?>> futures) {
+	public static void await(Collection<CompletableFuture<?>> futures) {
 		try {
 			awaitExecution(futures);
 		} catch (ExecutionException e) {
