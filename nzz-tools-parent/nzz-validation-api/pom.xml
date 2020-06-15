@@ -18,7 +18,7 @@
         <guava.version>28.0-jre</guava.version>
         <slf4j.version>1.7.25</slf4j.version>
         <javax.el.version>2.2.4</javax.el.version>
-        <hibernate.version>5.2.4.Final</hibernate.version>
+        <hibernate.version>5.3.5.Final</hibernate.version>
         <vertx.jspare.jpa.version>3.0.1</vertx.jspare.jpa.version>
         <vertx.jspare.unit.version>3.1.0</vertx.jspare.unit.version>
         <spring-context.version>5.1.2.RELEASE</spring-context.version>
