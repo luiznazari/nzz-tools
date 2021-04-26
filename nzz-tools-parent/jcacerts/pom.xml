@@ -19,7 +19,7 @@
         <start-class>br.com.nzz.security.jcacert.JCaCertCommand</start-class>
 
         <picocli.version>3.9.5</picocli.version>
-        <apache.commons-io.version>2.6</apache.commons-io.version>
+        <apache.commons-io.version>2.7</apache.commons-io.version>
         <maven-assembly-plugin.version>3.1.1</maven-assembly-plugin.version>
         <org.bouncycastle.bcprov-jdk16.version>1.46</org.bouncycastle.bcprov-jdk16.version>
     </properties>
